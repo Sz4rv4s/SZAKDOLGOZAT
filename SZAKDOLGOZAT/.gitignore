@@ -1,0 +1,5 @@
+DOCKER/.env
+.idea
+/DATA_COLLECTION/data_collector/.mvn/
+/DATA_COLLECTION/data_collector/target/
+/DATA_COLLECTION/data_collector/src/main/resources/.env
