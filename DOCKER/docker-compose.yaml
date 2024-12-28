@@ -3,8 +3,8 @@ services:
     image: mongo:latest
     container_name: MongoDB
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: "${INITDB_ROOT_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${INITDB_ROOT_PASSWORD}"
     ports:
       - "27017:27017"
     volumes:
@@ -12,6 +12,8 @@ services:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
     restart: unless-stopped
+    env_file:
+      - .env
 
 volumes:
   mongodb_data:

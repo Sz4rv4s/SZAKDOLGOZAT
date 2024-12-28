@@ -15,6 +15,7 @@ public class Team {
     private String teamCountry;
     private String teamFounded;
     private String teamBadge;
+    private String leagueId;
     private Venue venue;
     private List<Player> players;
     private List<Coach> coaches;

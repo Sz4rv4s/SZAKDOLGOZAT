@@ -1,1 +1,4 @@
-/SZAKDOLGOZAT/DOCKER/.env
+.idea
+DATA_COLLECTION/data_collector/src/main/resources/.env
+DOCKER/.env
+/DATA_COLLECTION/data_collector/target/
