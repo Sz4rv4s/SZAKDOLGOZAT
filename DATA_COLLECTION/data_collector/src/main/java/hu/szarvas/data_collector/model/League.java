@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class League {
     @Id
     private ObjectId leagueId;
-    private ObjectId countryId;
+    private String countryId;
     private String countryName;
     private String leagueName;
     private String leagueSeason;

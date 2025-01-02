@@ -8,6 +8,7 @@ import hu.szarvas.data_collector.repository.LeagueRepository;
 import hu.szarvas.data_collector.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -15,13 +16,23 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class FootballDataController {
 
     private final CountryRepository countryRepository;
     private final LeagueRepository leagueRepository;
     private final TeamRepository teamRepository;
+
+    @Autowired
+    public FootballDataController(
+            CountryRepository countryRepository,
+            LeagueRepository leagueRepository,
+            TeamRepository teamRepository
+    ) {
+        this.countryRepository = countryRepository;
+        this.leagueRepository = leagueRepository;
+        this.teamRepository = teamRepository;
+    }
 
     @GetMapping(path = "/countries", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<Country> getAllCountries() {

@@ -6,9 +6,9 @@ import hu.szarvas.data_collector.model.Team;
 import hu.szarvas.data_collector.repository.CountryRepository;
 import hu.szarvas.data_collector.repository.LeagueRepository;
 import hu.szarvas.data_collector.repository.TeamRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ import java.util.Set;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ReactiveDataCollectorService {
 
     private final CountryRepository countryRepository;
@@ -37,6 +36,18 @@ public class ReactiveDataCollectorService {
 
     @Value("${api.key}")
     private String apiKey;
+
+    @Autowired
+    public ReactiveDataCollectorService(
+            CountryRepository countryRepository,
+            LeagueRepository leagueRepository,
+            TeamRepository teamRepository,
+            WebClient webClient) {
+        this.countryRepository = countryRepository;
+        this.leagueRepository = leagueRepository;
+        this.teamRepository = teamRepository;
+        this.webClient = webClient;
+    }
 
     private static final Map<String, String> TOP_LEAGUES = Map.of(
             "England", "Premier League",
@@ -56,10 +67,6 @@ public class ReactiveDataCollectorService {
                 .uri(url)
                 .retrieve()
                 .bodyToFlux(Country.class)
-                .map(country -> {
-                    country.setId(new ObjectId());
-                    return country;
-                })
                 .flatMap(countryRepository::save)
                 .doOnNext(country -> log.debug("Saved country: {}", country.getCountryName()))
                 .doOnError(error -> log.error("Error fetching/saving countries: {}", error.getMessage()))
@@ -133,8 +140,8 @@ public class ReactiveDataCollectorService {
                 .thenMany(fetchAndSaveTopLeagues())
                 .thenMany(fetchAndSaveTeamsForTopLeagues())
                 .then()
-                .doOnSuccess(_ -> log.info("Completed full data collection"))
-                .doOnError(e -> log.error("Error during full data collection", e));
+                .doOnSuccess(_ -> log.info("Data collection completed successfully"))
+                .doOnError(error -> log.error("Error collecting data: {}", error.getMessage()));
     }
 
     @Scheduled(cron = "0 0 0 * * MON")
