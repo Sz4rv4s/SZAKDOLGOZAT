@@ -1,4 +1,15 @@
-db = db.getSiblingDB('football_db');
+db = db.getSiblingDB("admin").auth(
+    process.env.MONGO_INITDB_ROOT_USERNAME,
+    process.env.MONGO_INITDB_ROOT_PASSWORD
+);
+
+db = db.getSiblingDB("footballdb");
+
+db.createUser({
+  user: process.env.MONGO_USER,
+  pwd: process.env.MONGO_PASSWORD,
+  roles: ["readWrite"],
+});
 
 db.createCollection("countries", {
   validator: {
@@ -148,15 +159,3 @@ db.createCollection("teams", {
 db.countries.createIndex({ "country_id": 1 }, { unique: true });
 db.leagues.createIndex({ "league_id": 1 }, { unique: true });
 db.teams.createIndex({ "team_key": 1 }, { unique: true });
-
-
-db.createUser({
-  user: 'game_api_user',
-  pwd: 'game_api_password',
-  roles: [
-    {
-      role: 'readWrite',
-      db: 'football_db'
-    }
-  ]
-});

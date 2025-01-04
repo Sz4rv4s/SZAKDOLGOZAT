@@ -6,7 +6,6 @@ import hu.szarvas.data_collector.model.Team;
 import hu.szarvas.data_collector.repository.CountryRepository;
 import hu.szarvas.data_collector.repository.LeagueRepository;
 import hu.szarvas.data_collector.repository.TeamRepository;
-import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
