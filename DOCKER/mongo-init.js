@@ -1,15 +1,9 @@
-db = db.getSiblingDB("admin").auth(
-    process.env.MONGO_INITDB_ROOT_USERNAME,
-    process.env.MONGO_INITDB_ROOT_PASSWORD
-);
-
-db = db.getSiblingDB("footballdb");
-
+db = db.getSiblingDB('footballdb')
 db.createUser({
   user: process.env.MONGO_USER,
   pwd: process.env.MONGO_PASSWORD,
-  roles: ["readWrite"],
-});
+  roles: [{ role: 'readWrite', db: 'footballdb' }]
+})
 
 db.createCollection("countries", {
   validator: {
