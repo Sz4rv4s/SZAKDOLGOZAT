@@ -4,3 +4,6 @@ DOCKER/.env
 /DATA_COLLECTION/data_collector/target/
 /DOCKER/.env-mongo-express
 /DOCKER/.env-mongo
+backend/src/main/resources/.env
+backend/.mvn
+backend/target

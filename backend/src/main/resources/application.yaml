@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: backend
+  data:
+    mongodb:
+      host: ${MONGODB_HOST}
+      port: ${MONGODB_PORT}
+      database: ${MONGODB_DATABASE}
+      username: ${MONGODB_USERNAME}
+      password: ${MONGODB_PASSWORD}
+      authentication-database: ${MONGODB_AUTH_DB}
+
+api:
+  url: ${API_URL}
+  key: ${API_KEY}
+
+logging:
+  level:
+    org.springframework.data.mongodb: DEBUG
+    hu.szarvas.backend: DEBUG
