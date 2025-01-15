@@ -1,7 +1,7 @@
 services:
-  mongodb:
+  mongo:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongo
     restart: unless-stopped
     ports:
       - "27017:27017"
@@ -19,7 +19,7 @@ services:
       - "8111:8081"
     env_file: .env-mongo-express
     depends_on:
-      - mongodb
+      - mongo
 
 volumes:
   mongo:
