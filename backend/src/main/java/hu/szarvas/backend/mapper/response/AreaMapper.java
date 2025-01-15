@@ -1,4 +1,4 @@
-package hu.szarvas.backend.mapper;
+package hu.szarvas.backend.mapper.response;
 
 import hu.szarvas.backend.dto.response.AreaDTO;
 import hu.szarvas.backend.model.Area;
