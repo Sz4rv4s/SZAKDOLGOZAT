@@ -9,9 +9,9 @@ db.createCollection("areas", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["id", "name", "countryCode"],
+      required: ["_id", "name", "countryCode"],
       properties: {
-        id: {
+        _id: {
           bsonType: "int",
           description: "The unique identifier of the area"
         },
@@ -44,9 +44,9 @@ db.createCollection("seasons", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["id", "startDate", "endDate", "currentMatchday"],
+      required: ["_id", "startDate", "endDate", "currentMatchday"],
       properties: {
-        id: {
+        _id: {
           bsonType: "int",
           description: "The unique identifier of the season"
         },
@@ -75,9 +75,9 @@ db.createCollection("competitions", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["id", "areaId", "name", "code", "type", "plan"],
+      required: ["_id", "areaId", "name", "code", "type", "plan"],
       properties: {
-        id: {
+        _id: {
           bsonType: "int",
           description: "The unique identifier of the competition"
         },
@@ -128,9 +128,9 @@ db.createCollection("players", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["id", "name", "position", "dateOfBirth", "nationality"],
+      required: ["_id", "name", "position", "dateOfBirth", "nationality"],
       properties: {
-        id: {
+        _id: {
           bsonType: "int",
           description: "The unique identifier of the player"
         },
@@ -159,9 +159,9 @@ db.createCollection("teams", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["id", "areaId", "name", "shortName", "tla", "venue"],
+      required: ["_id", "areaId", "name", "shortName", "tla", "venue"],
       properties: {
-        id: {
+        _id: {
           bsonType: "int",
           description: "The unique identifier of the team"
         },
@@ -221,12 +221,6 @@ db.createCollection("teams", {
   }
 });
 
-db.areas.createIndex({ "id": 1 });
-db.areas.createIndex({ "parentAreaId": 1 });
-
 db.competitions.createIndex({ "areaId": 1 });
-db.competitions.createIndex({ "currentSeasonId": 1 });
-
+db.competitions.createIndex({ "currentSeasonId": 1});
 db.teams.createIndex({ "areaId": 1 });
-db.teams.createIndex({ "squad": 1 });
-db.players.createIndex({ "nationality": 1 });

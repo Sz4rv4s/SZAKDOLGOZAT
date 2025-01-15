@@ -46,7 +46,6 @@ public class DataFetchService {
                     log.debug("First saved area: {}", savedAreas.getFirst());
                 } catch (Exception e) {
                     log.error("Error during MongoDB save operation", e);
-                    throw e;
                 }
             } else {
                 log.error("API response was null");
