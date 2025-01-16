@@ -34,4 +34,14 @@ public class DataController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PostMapping("/fetchteams")
+    public ResponseEntity<Void> fetchTeams() {
+        try {
+            dataFetchService.fetchAndSaveTeams();
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

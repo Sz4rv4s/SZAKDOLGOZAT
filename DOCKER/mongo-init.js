@@ -124,6 +124,56 @@ db.createCollection("competitions", {
   }
 });
 
+db.createCollection("teams", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "competitionId", "seasonId", "areaId", "name", "playerIds"],
+      properties: {
+        _id: {
+          bsonType: "int",
+          description: "The unique identifier of the team"
+        },
+        competitionId: {
+          bsonType: "int",
+          description: "Reference to the league where the team plays"
+        },
+        seasonId: {
+          bsonType: "int",
+          description: "Reference to the current season's id"
+        },
+        areaId: {
+          bsonType: "int",
+          description: "Reference to the area where the team is based"
+        },
+        name: {
+          bsonType: "string",
+          description: "The full name of the team"
+        },
+        shortName: {
+          bsonType: "string",
+          description: "The abbreviated or common name of the team"
+        },
+        tla: {
+          bsonType: "string",
+          description: "The three-letter abbreviation of the team"
+        },
+        crest: {
+          bsonType: ["string", "null"],
+          description: "The URL to the team's crest image"
+        },
+        squad: {
+          bsonType: "array",
+          description: "List of player IDs in the team's squad",
+          items: {
+            bsonType: "int"
+          }
+        }
+      }
+    }
+  }
+});
+
 db.createCollection("players", {
   validator: {
     $jsonSchema: {
@@ -149,72 +199,6 @@ db.createCollection("players", {
         nationality: {
           bsonType: "string",
           description: "The player's nationality"
-        }
-      }
-    }
-  }
-});
-
-db.createCollection("teams", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["_id", "areaId", "name", "shortName", "tla", "venue"],
-      properties: {
-        _id: {
-          bsonType: "int",
-          description: "The unique identifier of the team"
-        },
-        areaId: {
-          bsonType: "int",
-          description: "Reference to the area where the team is based"
-        },
-        name: {
-          bsonType: "string",
-          description: "The full name of the team"
-        },
-        shortName: {
-          bsonType: "string",
-          description: "The abbreviated or common name of the team"
-        },
-        tla: {
-          bsonType: "string",
-          description: "The three-letter abbreviation of the team"
-        },
-        crest: {
-          bsonType: ["string", "null"],
-          description: "The URL to the team's crest image"
-        },
-        address: {
-          bsonType: ["string", "null"],
-          description: "The physical address of the team's headquarters"
-        },
-        website: {
-          bsonType: ["string", "null"],
-          description: "The official website URL of the team"
-        },
-        founded: {
-          bsonType: ["int", "null"],
-          description: "The year the team was founded"
-        },
-        clubColors: {
-          bsonType: ["string", "null"],
-          description: "The official colors of the team"
-        },
-        venue: {
-          bsonType: "string",
-          description: "The name of the team's home venue"
-        },
-        squad: {
-          bsonType: ["array", "null"],
-          description: "List of player IDs in the team's squad",
-          items: {
-            bsonType: "int"
-          }
-        },
-        lastUpdated: {
-          bsonType: ["string", "null"],
-          description: "The timestamp of the last update in ISO format"
         }
       }
     }
