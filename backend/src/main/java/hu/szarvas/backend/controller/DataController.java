@@ -25,10 +25,10 @@ public class DataController {
         }
     }
 
-    @PostMapping("/fetchcompetitions")
+    @PostMapping("/fetchcompetitionswithseasons")
     public ResponseEntity<Void> fetchCompetitions() {
         try {
-            dataFetchService.fetchAndSaveCompetitions();
+            dataFetchService.fetchAndSaveCompetitionsWithSeasons();
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();

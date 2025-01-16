@@ -44,7 +44,7 @@ db.createCollection("seasons", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["_id", "startDate", "endDate", "currentMatchday"],
+      required: ["_id", "startDate", "endDate"],
       properties: {
         _id: {
           bsonType: "int",
@@ -59,7 +59,7 @@ db.createCollection("seasons", {
           description: "The end date of the season in ISO format"
         },
         currentMatchday: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "The current matchday number of the season"
         },
         winner: {
