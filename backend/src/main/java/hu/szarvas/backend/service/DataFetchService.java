@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static hu.szarvas.backend.mapper.request.SeasonMapper.toSeason;
@@ -156,6 +157,8 @@ public class DataFetchService {
             log.info("Successfully saved {} teams", savedTeams.size());
             log.debug("First saved team: {}", savedTeams.getFirst());
 
+        } catch (NoSuchElementException e) {
+            log.error("Teams not found for league {}", competitionId);
         } catch (Exception e) {
             log.error("Error during MongoDB team save operation", e);
         }
