@@ -44,4 +44,14 @@ public class DataController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PostMapping("/fetchmatches")
+    public ResponseEntity<Void> fetchMatches() {
+        try {
+            dataFetchService.fetchAndSaveMatches();
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

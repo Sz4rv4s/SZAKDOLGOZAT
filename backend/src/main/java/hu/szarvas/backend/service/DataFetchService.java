@@ -1,11 +1,14 @@
 package hu.szarvas.backend.service;
 
 import hu.szarvas.backend.dto.request.CompetitionDTO;
+import hu.szarvas.backend.dto.request.MatchDTO;
 import hu.szarvas.backend.dto.request.TeamDTO;
 import hu.szarvas.backend.integration.external.AreasResponse;
 import hu.szarvas.backend.integration.external.CompetitionsResponse;
+import hu.szarvas.backend.integration.external.MatchesResponse;
 import hu.szarvas.backend.integration.external.TeamsResponse;
 import hu.szarvas.backend.mapper.request.CompetitionMapper;
+import hu.szarvas.backend.mapper.request.MatchMapper;
 import hu.szarvas.backend.mapper.request.TeamMapper;
 import hu.szarvas.backend.model.*;
 import hu.szarvas.backend.repository.*;
@@ -29,6 +32,7 @@ public class DataFetchService {
     private final SeasonRepository seasonRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
+    private final MatchRepository matchRepository;
     private final WebClient webClient;
 
     private static final TierPlan TIER = TierPlan.TIER_ONE;
@@ -200,17 +204,70 @@ public class DataFetchService {
                         saveTeam(competitionId, response);
                         savePlayers(response);
                     } else {
-                        log.warn("Null response received for competition ID: {}", competitionId);
+                        log.warn("Null response received for teams with players for competition ID: {}", competitionId);
                     }
                 } catch (Exception e) {
                     log.error("Error during MongoDB team save operation", e);
                 }
             });
 
-            log.info("Completed processing all competition IDs");
+            log.info("Completed processing teams with players for all competition IDs");
 
         } catch (Exception e) {
             log.error("Error in fetchAndSaveTeamsWithPlayers", e);
+            throw e;
+        }
+    }
+
+    private void saveMatches(MatchesResponse matchesResponse) {
+        try {
+            log.debug("Saving match");
+            List<MatchDTO> matchesDTO = matchesResponse.getMatches();
+            List<Match> matches;
+            matches = matchesDTO.stream()
+                    .map(MatchMapper::toMatch)
+                    .toList();
+
+            List<Match> savedMatches = matchRepository.saveAll(matches);
+            log.info("Successfully saved {} matches", savedMatches.size());
+            log.debug("First saved match: {}", savedMatches.getFirst());
+        } catch (NoSuchElementException e) {
+            log.debug("Matches not found");
+        } catch (Exception e) {
+            log.error("Error during MongoDB matches operation", e);
+        }
+    }
+
+    public void fetchAndSaveMatches() {
+        List<Integer> competitionIds = getIdsForPlanAndType();
+
+        try {
+            log.debug("Starting matches fetch from API for {} leagues", competitionIds.size());
+
+            competitionIds.forEach(competitionId -> {
+                try {
+                    MatchesResponse response = webClient
+                            .get()
+                            .uri(uriBuilder -> uriBuilder
+                                    .path("/competitions/{competitionId}/matches")
+                                    .build(competitionId))
+                            .retrieve()
+                            .bodyToMono(MatchesResponse.class)
+                            .block();
+                    if (response != null) {
+                        saveMatches(response);
+                    } else {
+                        log.warn("Null response received for matches for competition ID: {}", competitionId);
+                    }
+
+                    log.info("Completed processing matches for all competition IDs");
+
+                } catch (Exception e) {
+                    log.error("Error during MongoDB matches fetch operation", e);
+                }
+            });
+        } catch (Exception e) {
+            log.error("Error in fetchAndSaveMatches", e);
             throw e;
         }
     }

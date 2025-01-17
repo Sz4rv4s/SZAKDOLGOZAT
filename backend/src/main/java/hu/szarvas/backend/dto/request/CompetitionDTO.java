@@ -1,8 +1,10 @@
 package hu.szarvas.backend.dto.request;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class CompetitionDTO {
     private int id;
     private AreaDTO area;

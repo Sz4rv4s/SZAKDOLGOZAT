@@ -204,3 +204,64 @@ db.createCollection("players", {
     }
   }
 });
+
+db.createCollection("matches", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "competitionId", "seasonId", "utcDate", "status", "homeTeamId", "awayTeamId", "winner"],
+      properties: {
+        _id: {
+          bsonType: "int",
+          description: "The unique identifier of the match"
+        },
+        competitionId: {
+          bsonType: "int",
+          description: "Reference to the competition's ID where the match is played"
+        },
+        seasonId: {
+          bsonType: "int",
+          description: "Reference to the season's ID when the match is played"
+        },
+        utcDate: {
+          bsonType: "string",
+          description: "The date when the match will/was/is played in UTC"
+        },
+        status: {
+          bsonType: "string",
+          enum: ["FINISHED", "SCHEDULED", "TIMED", "LIVE", "IN_PLAY", "PAUSED", "POSTPONED", "SUSPENDED", "CANCELLED"],
+          description: "The status of the match"
+        },
+        matchday: {
+          bsonType: "int",
+          description: "The matchday when the match is played"
+        },
+        lastUpdated: {
+          bsonType: "string",
+          description: "The date when the match data was last updated"
+        },
+        homeTeamId: {
+          bsonType: "int",
+          description: "Reference to the home team's ID"
+        },
+        awayTeamId: {
+          bsonType: "int",
+          description: "Reference to the away team's ID"
+        },
+        winner: {
+          bsonType: "string",
+          enum: ["HOME_TEAM", "AWAY_TEAM", "DRAW", "null"],
+          description: "The result of the match"
+        },
+        homeGoals: {
+          bsonType: ["int", "null"],
+          description: "The goal number of the home team"
+        },
+        awayGoals: {
+          bsonType: ["int", "null"],
+          description: "The goal number of the away team"
+        },
+      }
+    }
+  }
+});
