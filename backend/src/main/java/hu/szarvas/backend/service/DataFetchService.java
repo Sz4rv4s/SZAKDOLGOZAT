@@ -7,14 +7,8 @@ import hu.szarvas.backend.integration.external.CompetitionsResponse;
 import hu.szarvas.backend.integration.external.TeamsResponse;
 import hu.szarvas.backend.mapper.request.CompetitionMapper;
 import hu.szarvas.backend.mapper.request.TeamMapper;
-import hu.szarvas.backend.model.Area;
-import hu.szarvas.backend.model.Competition;
-import hu.szarvas.backend.model.Season;
-import hu.szarvas.backend.model.Team;
-import hu.szarvas.backend.repository.AreaRepository;
-import hu.szarvas.backend.repository.CompetitionRepository;
-import hu.szarvas.backend.repository.SeasonRepository;
-import hu.szarvas.backend.repository.TeamRepository;
+import hu.szarvas.backend.model.*;
+import hu.szarvas.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,9 +28,10 @@ public class DataFetchService {
     private final CompetitionRepository competitionRepository;
     private final SeasonRepository seasonRepository;
     private final TeamRepository teamRepository;
+    private final PlayerRepository playerRepository;
     private final WebClient webClient;
 
-    private static final String TIER = "TIER_ONE";
+    private static final TierPlan TIER = TierPlan.TIER_ONE;
 
     public void fetchAndSaveAreas() {
         try {
@@ -77,28 +72,11 @@ public class DataFetchService {
         }
     }
 
-    public void fetchAndSaveCompetitionsWithSeasons() {
-        try {
-            log.debug("Starting competitions fetch from API");
-
-            CompetitionsResponse response = webClient
-                    .get()
-                    .uri("/competitions")
-                    .retrieve()
-                    .bodyToMono(CompetitionsResponse.class)
-                    .block();
-
-            if (response != null) {
-                saveSeasons(response.getCompetitions());
-
-                saveCompetitions(response.getCompetitions());
-            } else {
-                log.error("API response was null");
-            }
-        } catch (Exception e) {
-            log.error("Error in fetchAndSaveCompetitionsWithSeasons", e);
-            throw e;
-        }
+    private List<Integer> getIdsForPlanAndType() {
+        return competitionRepository.findByPlanAndType(TIER, CompetitionType.LEAGUE)
+                .stream()
+                .map(Competition::getId)
+                .collect(Collectors.toList());
     }
 
     private void saveSeasons(List<CompetitionDTO> competitions) {
@@ -134,11 +112,28 @@ public class DataFetchService {
         }
     }
 
-    private List<Integer> getIdsForPlanAndType() {
-        return competitionRepository.findByPlanAndType(TIER, "LEAGUE")
-                .stream()
-                .map(Competition::getId)
-                .collect(Collectors.toList());
+    public void fetchAndSaveCompetitionsWithSeasons() {
+        try {
+            log.debug("Starting competitions fetch from API");
+
+            CompetitionsResponse response = webClient
+                    .get()
+                    .uri("/competitions")
+                    .retrieve()
+                    .bodyToMono(CompetitionsResponse.class)
+                    .block();
+
+            if (response != null) {
+                saveSeasons(response.getCompetitions());
+
+                saveCompetitions(response.getCompetitions());
+            } else {
+                log.error("API response was null");
+            }
+        } catch (Exception e) {
+            log.error("Error in fetchAndSaveCompetitionsWithSeasons", e);
+            throw e;
+        }
     }
 
     private void saveTeam(Integer competitionId, TeamsResponse teamsResponse) {
@@ -164,7 +159,27 @@ public class DataFetchService {
         }
     }
 
-    public void fetchAndSaveTeams() {
+    private void savePlayers(TeamsResponse teamsResponse) {
+        try {
+            log.debug("Saving player");
+            List<TeamDTO> teamsDTO = teamsResponse.getTeams();
+            List<Player> players;
+            players = teamsDTO.stream()
+                    .map(TeamDTO::getSquad)
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList());
+
+            List<Player> savedPlayers = playerRepository.saveAll(players);
+            log.info("Successfully saved {} players", savedPlayers.size());
+            log.debug("First saved player: {}", savedPlayers.getFirst());
+        } catch (NoSuchElementException e) {
+            log.debug("Players not found");
+        } catch (Exception e) {
+            log.debug("Error during MongoDB player save operation", e);
+        }
+    }
+
+    public void fetchAndSaveTeamsWithPlayers() {
         List<Integer> competitionIds = getIdsForPlanAndType();
 
         try {
@@ -183,6 +198,7 @@ public class DataFetchService {
 
                     if (response != null) {
                         saveTeam(competitionId, response);
+                        savePlayers(response);
                     } else {
                         log.warn("Null response received for competition ID: {}", competitionId);
                     }
@@ -194,7 +210,7 @@ public class DataFetchService {
             log.info("Completed processing all competition IDs");
 
         } catch (Exception e) {
-            log.error("Error in fetchAndSaveTeams", e);
+            log.error("Error in fetchAndSaveTeamsWithPlayers", e);
             throw e;
         }
     }

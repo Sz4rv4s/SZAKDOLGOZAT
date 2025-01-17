@@ -1,5 +1,6 @@
 package hu.szarvas.backend.dto.request;
 
+import hu.szarvas.backend.model.Player;
 import lombok.Data;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class TeamDTO {
     private String venue;
     private Object runningCompetitions;
     private Object coach;
-    private List<PlayerDTO> squad;
+    private List<Player> squad;
     private Object staff;
     private String lastUpdated;
 }

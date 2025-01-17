@@ -26,7 +26,7 @@ public class DataController {
     }
 
     @PostMapping("/fetchcompetitionswithseasons")
-    public ResponseEntity<Void> fetchCompetitions() {
+    public ResponseEntity<Void> fetchCompetitionsWithSeasons() {
         try {
             dataFetchService.fetchAndSaveCompetitionsWithSeasons();
             return ResponseEntity.ok().build();
@@ -35,10 +35,10 @@ public class DataController {
         }
     }
 
-    @PostMapping("/fetchteams")
-    public ResponseEntity<Void> fetchTeams() {
+    @PostMapping("/fetchteamswithplayers")
+    public ResponseEntity<Void> fetchTeamsWithPlayers() {
         try {
-            dataFetchService.fetchAndSaveTeams();
+            dataFetchService.fetchAndSaveTeamsWithPlayers();
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();

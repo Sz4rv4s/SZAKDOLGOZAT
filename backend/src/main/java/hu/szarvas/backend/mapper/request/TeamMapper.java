@@ -1,7 +1,7 @@
 package hu.szarvas.backend.mapper.request;
 
-import hu.szarvas.backend.dto.request.PlayerDTO;
 import hu.szarvas.backend.dto.request.TeamDTO;
+import hu.szarvas.backend.model.Player;
 import hu.szarvas.backend.model.Team;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class TeamMapper {
                 .crest(teamDTO.getCrest())
                 .playerIds(teamDTO.getSquad()
                         .stream()
-                        .map(PlayerDTO::getId)
+                        .map(Player::getId)
                         .collect(Collectors.toList())
                 )
                 .build();

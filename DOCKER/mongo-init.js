@@ -178,7 +178,7 @@ db.createCollection("players", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["_id", "name", "position", "dateOfBirth", "nationality"],
+      required: ["_id", "name", "position"],
       properties: {
         _id: {
           bsonType: "int",
@@ -193,18 +193,14 @@ db.createCollection("players", {
           description: "The playing position of the player"
         },
         dateOfBirth: {
-          bsonType: "string",
+          bsonType: ["string", "null"],
           description: "The player's date of birth in ISO format"
         },
         nationality: {
-          bsonType: "string",
+          bsonType: ["string", "null"],
           description: "The player's nationality"
         }
       }
     }
   }
 });
-
-db.competitions.createIndex({ "areaId": 1 });
-db.competitions.createIndex({ "currentSeasonId": 1});
-db.teams.createIndex({ "areaId": 1 });
