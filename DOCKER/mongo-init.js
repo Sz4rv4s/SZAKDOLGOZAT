@@ -178,7 +178,7 @@ db.createCollection("players", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["_id", "name", "position"],
+      required: ["_id", "name"],
       properties: {
         _id: {
           bsonType: "int",
@@ -209,7 +209,7 @@ db.createCollection("matches", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["_id", "competitionId", "seasonId", "utcDate", "status", "homeTeamId", "awayTeamId", "winner"],
+      required: ["_id", "competitionId", "seasonId", "utcDate", "status", "homeTeamId", "awayTeamId"],
       properties: {
         _id: {
           bsonType: "int",
