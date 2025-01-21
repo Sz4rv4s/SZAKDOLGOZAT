@@ -1,4 +1,4 @@
-package hu.szarvas.backend.integration.external;
+package hu.szarvas.backend.integration;
 
 import hu.szarvas.backend.model.Area;
 import lombok.Data;
