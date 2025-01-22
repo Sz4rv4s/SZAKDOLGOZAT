@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>hu.szarvas</groupId>
-	<artifactId>backend</artifactId>
+	<artifactId>football-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>backend</name>
 	<description>DE-IK Szarvas Péter Szakdolgozat backend</description>

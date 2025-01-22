@@ -1,0 +1,7 @@
+package hu.szarvas.football_api.repository;
+
+import hu.szarvas.football_api.model.Area;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface AreaRepository extends MongoRepository<Area, Integer> {
+}
