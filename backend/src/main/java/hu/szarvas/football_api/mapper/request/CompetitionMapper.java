@@ -1,23 +1,25 @@
 package hu.szarvas.football_api.mapper.request;
 
-import hu.szarvas.football_api.dto.request.CompetitionDTO;
+import hu.szarvas.football_api.dto.request.CompetitionExternalDTO;
 import hu.szarvas.football_api.model.Competition;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
 @Component
 public class CompetitionMapper {
-    public static Competition toCompetition(CompetitionDTO competitionDTO) {
+    public static Competition toCompetition(CompetitionExternalDTO competitionExternalDTO) {
         return Competition.builder()
-                .id(competitionDTO.getId())
-                .areaId(competitionDTO.getArea().getId())
-                .name(competitionDTO.getName())
-                .code(competitionDTO.getCode())
-                .type(CompetitionTypeMapper.toCompetitionType(competitionDTO.getType()))
-                .emblem(competitionDTO.getEmblem())
-                .plan(TierPlanMapper.toTierPlan(competitionDTO.getPlan()))
-                .currentSeasonId(competitionDTO.getCurrentSeason() != null ? competitionDTO.getCurrentSeason().getId() : null)
-                .numberOfAvailableSeasons(competitionDTO.getNumberOfAvailableSeasons())
-                .lastUpdated(competitionDTO.getLastUpdated())
+                .id(competitionExternalDTO.getId())
+                .areaId(competitionExternalDTO.getArea() != null ? competitionExternalDTO.getArea().getId() : null)
+                .name(competitionExternalDTO.getName())
+                .code(competitionExternalDTO.getCode())
+                .type(CompetitionTypeMapper.toCompetitionType(competitionExternalDTO.getType()))
+                .emblem(competitionExternalDTO.getEmblem())
+                .plan(TierPlanMapper.toTierPlan(competitionExternalDTO.getPlan()))
+                .currentSeasonId(competitionExternalDTO.getCurrentSeason() != null ? competitionExternalDTO.getCurrentSeason().getId() : null)
+                .numberOfAvailableSeasons(competitionExternalDTO.getNumberOfAvailableSeasons())
+                .lastUpdated(Instant.parse(competitionExternalDTO.getLastUpdated()))
                 .build();
     }
 }

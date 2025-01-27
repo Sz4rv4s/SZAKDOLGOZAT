@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+
 @Data
 @Document(value = "competitions")
 @Builder
@@ -23,5 +25,5 @@ public class Competition {
     private TierPlan plan;
     private Integer currentSeasonId;
     private Integer numberOfAvailableSeasons;
-    private String lastUpdated;
+    private Instant lastUpdated;
 }

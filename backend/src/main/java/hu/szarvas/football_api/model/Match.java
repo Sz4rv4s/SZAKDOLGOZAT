@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,10 +19,10 @@ public class Match {
     private Integer id;
     private Integer competitionId;
     private Integer seasonId;
-    private String utcDate;
+    private Instant utcDate;
     private Status status;
     private Integer matchday;
-    private String lastUpdated;
+    private Instant lastUpdated;
     private Integer homeTeamId;
     private Integer awayTeamId;
     private Winner winner;

@@ -4,9 +4,9 @@ import hu.szarvas.football_api.model.Winner;
 import lombok.Data;
 
 @Data
-public class ScoreDTO {
+public class ScoreExternalDTO {
     private Winner winner;
     private String duration;
-    private GoalDTO fullTime;
-    private GoalDTO halfTime;
+    private GoalExternalDTO fullTime;
+    private GoalExternalDTO halfTime;
 }

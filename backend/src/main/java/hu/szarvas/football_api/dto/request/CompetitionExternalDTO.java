@@ -5,15 +5,15 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CompetitionDTO {
-    private int id;
-    private AreaDTO area;
+public class CompetitionExternalDTO {
+    private Integer id;
+    private AreaExternalDTO area;
     private String name;
     private String code;
     private String type;
     private String emblem;
     private String plan;
-    private CurrentSeasonDTO currentSeason;
+    private CurrentSeasonExternalDTO currentSeason;
     private Integer numberOfAvailableSeasons;
     private String lastUpdated;
 }

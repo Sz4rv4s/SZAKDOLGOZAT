@@ -1,4 +1,4 @@
-package hu.szarvas.football_api.dto.request;
+package hu.szarvas.football_api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefreshTokenRequest {
-    private String refreshToken;
+public class DefaultResponseDTO {
+    private boolean success;
+    private String message;
 }

@@ -1,8 +1,8 @@
 package hu.szarvas.football_api.service;
 
-import hu.szarvas.football_api.dto.request.CompetitionDTO;
-import hu.szarvas.football_api.dto.request.MatchDTO;
-import hu.szarvas.football_api.dto.request.TeamDTO;
+import hu.szarvas.football_api.dto.request.CompetitionExternalDTO;
+import hu.szarvas.football_api.dto.request.MatchExternalDTO;
+import hu.szarvas.football_api.dto.request.TeamExternalDTO;
 import hu.szarvas.football_api.integration.AreasResponse;
 import hu.szarvas.football_api.integration.CompetitionsResponse;
 import hu.szarvas.football_api.integration.MatchesResponse;
@@ -83,7 +83,7 @@ public class DataFetchService {
                 .collect(Collectors.toList());
     }
 
-    private void saveSeasons(List<CompetitionDTO> competitions) {
+    private void saveSeasons(List<CompetitionExternalDTO> competitions) {
         List<Season> seasons = competitions.stream()
                 .filter(comp -> comp.getCurrentSeason() != null)
                 .map(comp -> toSeason(comp.getCurrentSeason()))
@@ -100,8 +100,8 @@ public class DataFetchService {
         }
     }
 
-    private void saveCompetitions(List<CompetitionDTO> competitionDTOs) {
-        List<Competition> competitions = competitionDTOs.stream()
+    private void saveCompetitions(List<CompetitionExternalDTO> competitionExternalDTOS) {
+        List<Competition> competitions = competitionExternalDTOS.stream()
                 .map(CompetitionMapper::toCompetition)
                 .toList();
 
@@ -144,12 +144,12 @@ public class DataFetchService {
         try {
             log.debug("Starting team fetch from API for league {}", competitionId);
 
-            List<TeamDTO> teamsDTO = teamsResponse.getTeams();
+            List<TeamExternalDTO> teamsDTO = teamsResponse.getTeams();
             Integer seasonId = teamsResponse.getSeason().getId();
 
             List<Team> teams;
             teams = teamsDTO.stream()
-                    .map(teamDTO -> TeamMapper.toTeam(teamDTO, competitionId, seasonId))
+                    .map(teamExternalDTO -> TeamMapper.toTeam(teamExternalDTO, competitionId, seasonId))
                     .toList();
 
             List<Team> savedTeams = teamRepository.saveAll(teams);
@@ -166,10 +166,10 @@ public class DataFetchService {
     private void savePlayers(TeamsResponse teamsResponse) {
         try {
             log.debug("Saving player");
-            List<TeamDTO> teamsDTO = teamsResponse.getTeams();
+            List<TeamExternalDTO> teamsDTO = teamsResponse.getTeams();
             List<Player> players;
             players = teamsDTO.stream()
-                    .map(TeamDTO::getSquad)
+                    .map(TeamExternalDTO::getSquad)
                     .flatMap(List::stream)
                     .collect(Collectors.toList());
 
@@ -222,7 +222,7 @@ public class DataFetchService {
     private void saveMatches(MatchesResponse matchesResponse) {
         try {
             log.debug("Saving match");
-            List<MatchDTO> matchesDTO = matchesResponse.getMatches();
+            List<MatchExternalDTO> matchesDTO = matchesResponse.getMatches();
             List<Match> matches;
             matches = matchesDTO.stream()
                     .map(MatchMapper::toMatch)

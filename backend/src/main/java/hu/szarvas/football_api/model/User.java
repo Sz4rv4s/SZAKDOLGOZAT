@@ -3,6 +3,7 @@ package hu.szarvas.football_api.model;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,7 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 public class User {
     @Id
-    private String id;
+    private Integer id;
+
+    @Transient
+    public static final String SEQUENCE_NAME = "user_sequence";
 
     @Indexed(unique = true)
     private String email;

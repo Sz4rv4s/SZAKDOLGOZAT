@@ -7,18 +7,22 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Data
-@Document(value = "seasons")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Season {
+@Document(collection = "match_score_bets")
+public class MatchScoreBet {
     @Id
     private Integer id;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Integer currentMatchday;
-    private String winner;
+
+    private Integer userId;
+    private Integer matchId;
+    private Integer homeScoreBet;
+    private Integer awayScoreBet;
+    private BetStatus status;
+    private Instant date;
+
 }

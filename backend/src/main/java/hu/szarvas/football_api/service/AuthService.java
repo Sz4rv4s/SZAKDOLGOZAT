@@ -1,8 +1,8 @@
 package hu.szarvas.football_api.service;
 
-import hu.szarvas.football_api.dto.request.LoginRequest;
-import hu.szarvas.football_api.dto.request.RefreshTokenRequest;
-import hu.szarvas.football_api.dto.request.RegisterRequest;
+import hu.szarvas.football_api.dto.request.LoginRequestDTO;
+import hu.szarvas.football_api.dto.request.RefreshTokenRequestDTO;
+import hu.szarvas.football_api.dto.request.RegisterRequestDTO;
 import hu.szarvas.football_api.dto.response.AuthResponse;
 import hu.szarvas.football_api.model.User;
 import hu.szarvas.football_api.repository.UserRepository;
@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -20,8 +21,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenBlacklistService tokenBlacklistService;
+    private final SequenceGeneratorService sequenceGenerator;
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequestDTO request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -30,6 +32,7 @@ public class AuthService {
         }
 
         User user = User.builder()
+                .id(sequenceGenerator.generateSequence(User.SEQUENCE_NAME))
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -47,15 +50,15 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequestDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
 
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String jwtToken = jwtService.generateToken(user);
@@ -69,7 +72,7 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponse refreshToken(RefreshTokenRequest request) {
+    public AuthResponse refreshToken(RefreshTokenRequestDTO request) {
         String refreshToken = request.getRefreshToken();
         if (!jwtService.isTokenValid(refreshToken)) {
             throw new RuntimeException("Invalid refresh token");

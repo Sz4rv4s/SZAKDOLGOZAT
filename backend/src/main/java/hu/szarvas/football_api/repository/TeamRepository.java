@@ -2,6 +2,8 @@ package hu.szarvas.football_api.repository;
 
 import hu.szarvas.football_api.model.Team;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TeamRepository extends MongoRepository<Team, String> {
+@Repository
+public interface TeamRepository extends MongoRepository<Team, Integer> {
 }

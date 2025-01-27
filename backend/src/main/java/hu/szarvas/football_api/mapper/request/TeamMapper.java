@@ -1,6 +1,6 @@
 package hu.szarvas.football_api.mapper.request;
 
-import hu.szarvas.football_api.dto.request.TeamDTO;
+import hu.szarvas.football_api.dto.request.TeamExternalDTO;
 import hu.szarvas.football_api.model.Player;
 import hu.szarvas.football_api.model.Team;
 import org.springframework.stereotype.Component;
@@ -9,17 +9,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class TeamMapper {
-    public static Team toTeam(TeamDTO teamDTO, Integer competitionId, Integer seasonId) {
+    public static Team toTeam(TeamExternalDTO teamExternalDTO, Integer competitionId, Integer seasonId) {
         return Team.builder()
-                .id(teamDTO.getId())
+                .id(teamExternalDTO.getId())
                 .competitionId(competitionId)
                 .seasonId(seasonId)
-                .areaId(teamDTO.getArea().getId())
-                .name(teamDTO.getName())
-                .shortName(teamDTO.getShortName())
-                .tla(teamDTO.getTla())
-                .crest(teamDTO.getCrest())
-                .playerIds(teamDTO.getSquad()
+                .areaId(teamExternalDTO.getArea() != null ? teamExternalDTO.getArea().getId() : null)
+                .name(teamExternalDTO.getName())
+                .shortName(teamExternalDTO.getShortName())
+                .tla(teamExternalDTO.getTla())
+                .crest(teamExternalDTO.getCrest())
+                .playerIds(teamExternalDTO.getSquad()
                         .stream()
                         .map(Player::getId)
                         .collect(Collectors.toList())

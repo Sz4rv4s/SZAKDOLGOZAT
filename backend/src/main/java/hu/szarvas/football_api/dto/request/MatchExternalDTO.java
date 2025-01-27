@@ -4,10 +4,10 @@ import hu.szarvas.football_api.model.Status;
 import lombok.Data;
 
 @Data
-public class MatchDTO {
-    private AreaDTO area;
-    private CompetitionDTO competition;
-    private CurrentSeasonDTO season;
+public class MatchExternalDTO {
+    private AreaExternalDTO area;
+    private CompetitionExternalDTO competition;
+    private CurrentSeasonExternalDTO season;
     private Integer id;
     private String utcDate;
     private Status status;
@@ -15,9 +15,9 @@ public class MatchDTO {
     private String stage;
     private String group;
     private String lastUpdated;
-    private TeamDTO homeTeam;
-    private TeamDTO awayTeam;
-    private ScoreDTO score;
+    private TeamExternalDTO homeTeam;
+    private TeamExternalDTO awayTeam;
+    private ScoreExternalDTO score;
     private Object odds;
     private Object referees;
 }

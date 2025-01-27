@@ -51,12 +51,12 @@ db.createCollection("seasons", {
           description: "The unique identifier of the season"
         },
         startDate: {
-          bsonType: "string",
-          description: "The start date of the season in ISO format"
+          bsonType: "date",
+          description: "The start date of the season"
         },
         endDate: {
-          bsonType: "string",
-          description: "The end date of the season in ISO format"
+          bsonType: "date",
+          description: "The end date of the season"
         },
         currentMatchday: {
           bsonType: ["int", "null"],
@@ -82,7 +82,7 @@ db.createCollection("competitions", {
           description: "The unique identifier of the competition"
         },
         areaId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the area where the competition takes place"
         },
         name: {
@@ -95,7 +95,7 @@ db.createCollection("competitions", {
         },
         type: {
           bsonType: "string",
-          enum: ["CUP", "LEAGUE"],
+          enum: ["CUP", "LEAGUE", "SUPER_CUP", "PLAYOFFS"],
           description: "The type of the competition"
         },
         emblem: {
@@ -116,8 +116,8 @@ db.createCollection("competitions", {
           description: "The number of available seasons for this competition"
         },
         lastUpdated: {
-          bsonType: ["string", "null"],
-          description: "The timestamp of the last update in ISO format"
+          bsonType: ["date", "null"],
+          description: "The timestamp of the last update"
         }
       }
     }
@@ -135,15 +135,15 @@ db.createCollection("teams", {
           description: "The unique identifier of the team"
         },
         competitionId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the league where the team plays"
         },
         seasonId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the current season's id"
         },
         areaId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the area where the team is based"
         },
         name: {
@@ -193,7 +193,7 @@ db.createCollection("players", {
           description: "The playing position of the player"
         },
         dateOfBirth: {
-          bsonType: ["string", "null"],
+          bsonType: ["date", "null"],
           description: "The player's date of birth in ISO format"
         },
         nationality: {
@@ -216,15 +216,15 @@ db.createCollection("matches", {
           description: "The unique identifier of the match"
         },
         competitionId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the competition's ID where the match is played"
         },
         seasonId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the season's ID when the match is played"
         },
         utcDate: {
-          bsonType: "string",
+          bsonType: "date",
           description: "The date when the match will/was/is played in UTC"
         },
         status: {
@@ -237,15 +237,15 @@ db.createCollection("matches", {
           description: "The matchday when the match is played"
         },
         lastUpdated: {
-          bsonType: "string",
+          bsonType: "date",
           description: "The date when the match data was last updated"
         },
         homeTeamId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the home team's ID"
         },
         awayTeamId: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "Reference to the away team's ID"
         },
         winner: {
@@ -261,6 +261,108 @@ db.createCollection("matches", {
           bsonType: ["int", "null"],
           description: "The goal number of the away team"
         },
+      }
+    }
+  }
+});
+
+db.createCollection("users", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "email", "username", "password"],
+      properties: {
+        _id: {
+          bsonType: "int",
+          description: "The unique identifier of the user"
+        },
+        email: {
+          bsonType: "string",
+          description: "The unique email of the user"
+        },
+        username: {
+          bsonType: "string",
+          description: "The unique username of the user"
+        },
+        password: {
+          bsonType: "string",
+          description: "The password of the user"
+        },
+        refreshToken: {
+          bsonType: ["string", "null"],
+          description: "The refresh token of the user if logged in"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("match_score_bets", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "userId", "matchId", "homeScoreBet", "awayScoreBet", "status"],
+      properties: {
+        _id: {
+          bsonType: "int",
+          description: "The unique identifier of the match score bet"
+        },
+        userId: {
+          bsonType: "int",
+          description: "Reference to the user"
+        },
+        matchId: {
+          bsonType: "int",
+          description: "Reference to the match"
+        },
+        homeScoreBet: {
+          bsonType: "int",
+          description: "The number of goals the home team will score"
+        },
+        awayScoreBet: {
+          bsonType: "int",
+          description: "The number of goals the away team will score"
+        },
+        status: {
+          bsonType: "string",
+          enum: ["FINISHED", "LIVE", "IN_PLAY", "CANCELLED"],
+          description: "The status of the bet"
+        },
+        date: {
+          bsonType: "date",
+          description: "The date when the bet is made"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("user_points", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "userId", "points", "matchId", "matchDate"],
+      properties: {
+        _id: {
+          bsonType: "int",
+          description: "The unique identifier of the point entry"
+        },
+        userId: {
+          bsonType: "int",
+          description: "Reference to the user"
+        },
+        points: {
+          bsonType: "int",
+          description: "The amount of points the user gained"
+        },
+        matchId: {
+          bsonType: "int",
+          description: "Reference to the match"
+        },
+        matchDate: {
+          bsonType: "date",
+          description: "The date of the match"
+        }
       }
     }
   }
