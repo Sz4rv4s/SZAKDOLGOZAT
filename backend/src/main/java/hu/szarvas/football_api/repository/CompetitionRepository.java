@@ -13,4 +13,6 @@ public interface CompetitionRepository extends MongoRepository<Competition, Inte
     List<Competition> findByPlanAndType(TierPlan plan, CompetitionType type);
 
     List<Competition> findByType(CompetitionType type);
+
+    Competition getCompetitionById(Integer id);
 }

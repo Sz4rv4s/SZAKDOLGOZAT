@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TeamRepository extends MongoRepository<Team, Integer> {
+    Team getTeamById(Integer id);
 }

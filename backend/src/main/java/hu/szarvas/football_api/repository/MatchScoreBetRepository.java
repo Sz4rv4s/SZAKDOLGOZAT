@@ -11,4 +11,6 @@ import java.util.List;
 public interface MatchScoreBetRepository extends MongoRepository<MatchScoreBet, Integer> {
     boolean existsByUserIdAndMatchId(Integer userId, Integer matchId);
     List<MatchScoreBet> findByStatus(BetStatus status);
+
+    List<MatchScoreBet> getMatchScoreBetByUserId(Integer userId);
 }

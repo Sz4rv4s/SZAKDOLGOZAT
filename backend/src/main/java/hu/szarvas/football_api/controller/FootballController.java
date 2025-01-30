@@ -3,6 +3,7 @@ package hu.szarvas.football_api.controller;
 import hu.szarvas.football_api.dto.response.CompetitionResponseDTO;
 import hu.szarvas.football_api.dto.response.DefaultResponseDTO;
 import hu.szarvas.football_api.dto.response.MatchResponseDTO;
+import hu.szarvas.football_api.dto.response.MatchScoreBetResponseDTO;
 import hu.szarvas.football_api.model.BetStatus;
 import hu.szarvas.football_api.model.MatchScoreBet;
 import hu.szarvas.football_api.service.FootballService;
@@ -37,5 +38,10 @@ public class FootballController {
     @GetMapping("/get/{leagueId}/upcomingmatches")
     public ResponseEntity<MatchResponseDTO> getUpcomingMatchesForLeague(@PathVariable Integer leagueId) {
         return footballService.getUpcomingMatchesForLeague(leagueId);
+    }
+
+    @GetMapping("/get/{userId}/bets/match-score")
+    public ResponseEntity<MatchScoreBetResponseDTO> getMatchScoreBet(@PathVariable Integer userId) {
+        return footballService.getMatchScoreBetsForUser(userId);
     }
 }

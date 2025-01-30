@@ -2,7 +2,6 @@ package hu.szarvas.football_api.repository;
 
 import hu.szarvas.football_api.model.Match;
 import hu.szarvas.football_api.model.Status;
-import org.springframework.beans.factory.config.YamlProcessor;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

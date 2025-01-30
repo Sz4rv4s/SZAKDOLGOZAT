@@ -1,8 +1,7 @@
 package hu.szarvas.football_api.service;
 
-import hu.szarvas.football_api.dto.response.CompetitionResponseDTO;
-import hu.szarvas.football_api.dto.response.DefaultResponseDTO;
-import hu.szarvas.football_api.dto.response.MatchResponseDTO;
+import hu.szarvas.football_api.dto.response.*;
+import hu.szarvas.football_api.mapper.response.MatchResponseMapper;
 import hu.szarvas.football_api.model.*;
 import hu.szarvas.football_api.repository.CompetitionRepository;
 import hu.szarvas.football_api.repository.MatchRepository;
@@ -25,6 +24,7 @@ public class FootballService {
     private final MatchRepository matchRepository;
     private final LeaderboardService leaderboardService;
     private final CompetitionRepository competitionRepository;
+    private final MatchResponseMapper matchResponseMapper;
 
     public ResponseEntity<DefaultResponseDTO> makeMatchScoreBet(MatchScoreBet bet) {
         try {
@@ -139,16 +139,19 @@ public class FootballService {
                         .body(MatchResponseDTO.builder()
                                 .success(true)
                                 .message("No matches found for league " + leagueId)
-                                .match(matches)
                                 .build());
             }
+
+            List<MatchDTO> matchesDTO = matches.stream()
+                    .map(matchResponseMapper::toMatchDTO)
+                    .toList();
 
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(MatchResponseDTO.builder()
                             .success(true)
                             .message("Matches found for league " + leagueId)
-                            .match(matches)
+                            .match(matchesDTO)
                             .build());
 
         } catch (Exception e) {
@@ -156,6 +159,38 @@ public class FootballService {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MatchResponseDTO.builder()
+                            .success(false)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
+
+    public ResponseEntity<MatchScoreBetResponseDTO> getMatchScoreBetsForUser(Integer userId) {
+        try {
+            List<MatchScoreBet> matchScoreBets = matchScoreBetRepository.getMatchScoreBetByUserId(userId);
+
+            if (matchScoreBets.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(MatchScoreBetResponseDTO.builder()
+                                .success(true)
+                                .message("No bet found for user " + userId)
+                                .build());
+            }
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(MatchScoreBetResponseDTO.builder()
+                            .success(true)
+                            .message("Bets found for user " + userId)
+                            .matchScoreBet(matchScoreBets)
+                            .build());
+
+        } catch (Exception e) {
+            log.error("Error retrieving match score bets for user {}", userId, e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MatchScoreBetResponseDTO.builder()
                             .success(false)
                             .message(e.getMessage())
                             .build());
