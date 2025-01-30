@@ -2,6 +2,7 @@ package hu.szarvas.football_api.service;
 
 import hu.szarvas.football_api.dto.response.*;
 import hu.szarvas.football_api.mapper.response.MatchResponseMapper;
+import hu.szarvas.football_api.mapper.response.MatchScoreBetMapper;
 import hu.szarvas.football_api.model.*;
 import hu.szarvas.football_api.repository.CompetitionRepository;
 import hu.szarvas.football_api.repository.MatchRepository;
@@ -25,6 +26,7 @@ public class FootballService {
     private final LeaderboardService leaderboardService;
     private final CompetitionRepository competitionRepository;
     private final MatchResponseMapper matchResponseMapper;
+    private final MatchScoreBetMapper matchScoreBetMapper;
 
     public ResponseEntity<DefaultResponseDTO> makeMatchScoreBet(MatchScoreBet bet) {
         try {
@@ -178,12 +180,16 @@ public class FootballService {
                                 .build());
             }
 
+            List<MatchScoreBetDTO> matchScoreBetsDTO = matchScoreBets.stream()
+                    .map(matchScoreBetMapper::toMatchScoreBetDTO)
+                    .toList();
+
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(MatchScoreBetResponseDTO.builder()
                             .success(true)
                             .message("Bets found for user " + userId)
-                            .matchScoreBet(matchScoreBets)
+                            .matchScoreBet(matchScoreBetsDTO)
                             .build());
 
         } catch (Exception e) {
@@ -196,4 +202,5 @@ public class FootballService {
                             .build());
         }
     }
+
 }

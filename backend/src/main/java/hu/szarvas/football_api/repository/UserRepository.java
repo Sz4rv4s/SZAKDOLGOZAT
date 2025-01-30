@@ -13,4 +13,6 @@ public interface UserRepository extends MongoRepository<User, Integer> {
     Optional<User> findByRefreshToken(String refreshToken);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
+
+    User getUserById(Integer id);
 }
