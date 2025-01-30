@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface CompetitionRepository extends MongoRepository<Competition, Integer> {
     List<Competition> findByPlanAndType(TierPlan plan, CompetitionType type);
+
+    List<Competition> findByType(CompetitionType type);
 }
