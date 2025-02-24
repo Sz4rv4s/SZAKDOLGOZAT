@@ -1,9 +1,6 @@
 package hu.szarvas.football_api.service;
 
-import hu.szarvas.football_api.model.Match;
-import hu.szarvas.football_api.model.MatchScoreBet;
-import hu.szarvas.football_api.model.UserPoints;
-import hu.szarvas.football_api.model.LeaderboardEntry;
+import hu.szarvas.football_api.model.*;
 import hu.szarvas.football_api.repository.MatchRepository;
 import hu.szarvas.football_api.repository.MatchScoreBetRepository;
 import hu.szarvas.football_api.repository.UserPointsRepository;
@@ -23,13 +20,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LeaderboardService {
     private final UserPointsRepository userPointsRepository;
-    private final MatchScoreBetRepository matchScoreBetRepository;
-    private final MatchRepository matchRepository;
+    private final SequenceGeneratorService sequenceGenerator;
 
     public void processFinishedBet(MatchScoreBet bet, Match match) {
         int points = calculatePoints(bet, match);
         if (points > 0) {
             UserPoints userPoints = UserPoints.builder()
+                    .id(sequenceGenerator.generateSequence(UserPoints.SEQUENCE_NAME))
                     .userId(bet.getUserId())
                     .points(points)
                     .matchId(bet.getMatchId())
