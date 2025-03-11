@@ -1,0 +1,561 @@
+{
+  "name": "SZAKDOLGOZAT",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "api-football-data-org",
+      "root": {
+        "meta": {
+          "name": "api.football-data.org"
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "COMPETITIONS",
+          "seq": 2,
+          "request": {
+            "url": "https://api.football-data.org/v4/competitions/",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "X-Auth-Token",
+                "value": "{{X-Auth-Token}}",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "AREAS",
+          "seq": 1,
+          "request": {
+            "url": "https://api.football-data.org/v4/areas/",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "X-Auth-Token",
+                "value": "{{X-Auth-Token}}",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "TEAMS",
+          "seq": 3,
+          "request": {
+            "url": "https://api.football-data.org/v4/competitions/2013/teams",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "X-Auth-Token",
+                "value": "{{X-Auth-Token}}",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "MATCHES",
+          "seq": 4,
+          "request": {
+            "url": "https://api.football-data.org/v4/competitions/2014/matches",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "X-Auth-Token",
+                "value": "{{X-Auth-Token}}",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "football-api",
+      "root": {
+        "meta": {
+          "name": "SPRING"
+        }
+      },
+      "items": [
+        {
+          "type": "folder",
+          "name": "AUTH",
+          "root": {
+            "meta": {
+              "name": "AUTH"
+            }
+          },
+          "items": [
+            {
+              "type": "http",
+              "name": "REFRESH",
+              "seq": 2,
+              "request": {
+                "url": "http://localhost:8080/api/auth/refresh",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "REGISTER",
+              "seq": 1,
+              "request": {
+                "url": "http://localhost:8080/api/auth/register",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\r\n    \"email\": \"peti20031202@gmail.com\",\r\n    \"username\": \"szarvas\",\r\n    \"password\": \"szarvas\"\r\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "LOGIN",
+              "seq": 4,
+              "request": {
+                "url": "http://localhost:8080/api/auth/login",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\r\n    \"username\": \"szarvas\",\r\n    \"password\": \"szarvas\"\r\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "none"
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "LOGOUT",
+              "seq": 3,
+              "request": {
+                "url": "http://localhost:8080/api/auth/logout",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "FETCH",
+          "items": [
+            {
+              "type": "http",
+              "name": "FETCH AREAS",
+              "seq": 1,
+              "request": {
+                "url": "http://localhost:8080/api/data/fetchareas",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "FETCH MATCHES",
+              "seq": 2,
+              "request": {
+                "url": "http://localhost:8080/api/data/fetchmatches",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "FETCH TEAMS WITH PLAYERS",
+              "seq": 3,
+              "request": {
+                "url": "http://localhost:8080/api/data/fetchteamswithplayers",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "FETCH COMPETITIONS WITH SEASONS",
+              "seq": 4,
+              "request": {
+                "url": "http://localhost:8080/api/data/fetchcompetitionswithseasons",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "BET",
+          "items": [
+            {
+              "type": "http",
+              "name": "BET MATCH",
+              "seq": 1,
+              "request": {
+                "url": "http://localhost:8080/api/football/bets/match-score",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "json",
+                  "json": "{\r\n    \"id\": 0,\r\n    \"userId\": 1,\r\n    \"matchId\": 503853,\r\n    \"homeScoreBet\": 0,\r\n    \"awayScoreBet\": 1,\r\n    \"status\": \"IN_PLAY\",\r\n    \"date\": \"2025-01-27T13:53:15Z\"\r\n}",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "folder",
+          "name": "FRONTEND-GET",
+          "items": [
+            {
+              "type": "http",
+              "name": "GET UPCOMING MATCHES FOR LEAGUE",
+              "seq": 1,
+              "request": {
+                "url": "http://localhost:8080/api/football/get/2021/upcomingmatches",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET BETS",
+              "seq": 2,
+              "request": {
+                "url": "http://localhost:8080/api/football/get/1/bets/match-score",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            },
+            {
+              "type": "http",
+              "name": "GET LEAGUES",
+              "seq": 3,
+              "request": {
+                "url": "http://localhost:8080/api/football/get/leagues",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": {
+                  "mode": "none",
+                  "formUrlEncoded": [],
+                  "multipartForm": [],
+                  "file": []
+                },
+                "script": {},
+                "vars": {},
+                "assertions": [],
+                "tests": "",
+                "docs": "",
+                "auth": {
+                  "mode": "bearer",
+                  "bearer": {
+                    "token": "{{accessToken}}"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "root": {
+    "request": {
+      "auth": {
+        "mode": "none"
+      },
+      "vars": {
+        "req": [
+          {
+            "name": "X-Auth-Token",
+            "value": "",
+            "enabled": true,
+            "local": false,
+            "uid": "WVZDC289XMpsvaf4u1ERE"
+          },
+          {
+            "name": "accessToken",
+            "value": "",
+            "enabled": true,
+            "local": false,
+            "uid": "kw6OXVpQjV6hDgx0nzwYA"
+          },
+          {
+            "name": "refreshToken",
+            "value": "",
+            "enabled": true,
+            "local": false,
+            "uid": "QHY0aEYFKsApIyqtxbubM"
+          }
+        ]
+      }
+    },
+    "meta": {
+      "name": "SZAKDOLGOZAT"
+    }
+  },
+  "brunoConfig": {
+    "version": "1",
+    "name": "SZAKDOLGOZAT",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}

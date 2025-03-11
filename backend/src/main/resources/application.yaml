@@ -1,6 +1,6 @@
 spring:
   application:
-    name: backend
+    name: football-api
   data:
     mongodb:
       host: ${MONGODB_HOST}
