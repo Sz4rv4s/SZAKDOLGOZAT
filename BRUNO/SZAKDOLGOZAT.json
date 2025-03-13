@@ -27,16 +27,8 @@
             ],
             "params": [],
             "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": [],
-              "file": []
+              "mode": "none"
             },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "docs": "",
             "auth": {
               "mode": "none"
             }
@@ -58,16 +50,8 @@
             ],
             "params": [],
             "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": [],
-              "file": []
+              "mode": "none"
             },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "docs": "",
             "auth": {
               "mode": "none"
             }
@@ -89,16 +73,8 @@
             ],
             "params": [],
             "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": [],
-              "file": []
+              "mode": "none"
             },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "docs": "",
             "auth": {
               "mode": "none"
             }
@@ -120,16 +96,8 @@
             ],
             "params": [],
             "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": [],
-              "file": []
+              "mode": "none"
             },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "docs": "",
             "auth": {
               "mode": "none"
             }
@@ -166,16 +134,8 @@
                 "params": [],
                 "body": {
                   "mode": "json",
-                  "json": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "json": "{\"refreshToken\": \"{{refreshToken}}\"}"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -195,16 +155,8 @@
                 "params": [],
                 "body": {
                   "mode": "json",
-                  "json": "{\r\n    \"email\": \"peti20031202@gmail.com\",\r\n    \"username\": \"szarvas\",\r\n    \"password\": \"szarvas\"\r\n}",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "json": "{\"email\": \"peti20031202@gmail.com\", \"username\": \"szarvas\", \"password\": \"szarvas\"}"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "none"
                 }
@@ -221,16 +173,8 @@
                 "params": [],
                 "body": {
                   "mode": "json",
-                  "json": "{\r\n    \"username\": \"szarvas\",\r\n    \"password\": \"szarvas\"\r\n}",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "json": "{\"username\": \"szarvas\", \"password\": \"szarvas\"}"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "none"
                 }
@@ -247,16 +191,8 @@
                 "params": [],
                 "body": {
                   "mode": "json",
-                  "json": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "json": "{\"refreshToken\": \"{{refreshToken}}\"}"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -281,16 +217,8 @@
                 "headers": [],
                 "params": [],
                 "body": {
-                  "mode": "none",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "mode": "none"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -309,16 +237,8 @@
                 "headers": [],
                 "params": [],
                 "body": {
-                  "mode": "none",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "mode": "none"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -337,16 +257,8 @@
                 "headers": [],
                 "params": [],
                 "body": {
-                  "mode": "none",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "mode": "none"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -365,16 +277,8 @@
                 "headers": [],
                 "params": [],
                 "body": {
-                  "mode": "none",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "mode": "none"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -400,16 +304,8 @@
                 "params": [],
                 "body": {
                   "mode": "json",
-                  "json": "{\r\n    \"id\": 0,\r\n    \"userId\": 1,\r\n    \"matchId\": 503853,\r\n    \"homeScoreBet\": 0,\r\n    \"awayScoreBet\": 1,\r\n    \"status\": \"IN_PLAY\",\r\n    \"date\": \"2025-01-27T13:53:15Z\"\r\n}",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "json": "{\"id\": 0, \"userId\": 1, \"matchId\": 503853, \"homeScoreBet\": 0, \"awayScoreBet\": 1, \"status\": \"IN_PLAY\", \"date\": \"2025-01-27T13:53:15Z\"}"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -434,16 +330,8 @@
                 "headers": [],
                 "params": [],
                 "body": {
-                  "mode": "none",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "mode": "none"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -462,16 +350,8 @@
                 "headers": [],
                 "params": [],
                 "body": {
-                  "mode": "none",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "mode": "none"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {
@@ -490,16 +370,8 @@
                 "headers": [],
                 "params": [],
                 "body": {
-                  "mode": "none",
-                  "formUrlEncoded": [],
-                  "multipartForm": [],
-                  "file": []
+                  "mode": "none"
                 },
-                "script": {},
-                "vars": {},
-                "assertions": [],
-                "tests": "",
-                "docs": "",
                 "auth": {
                   "mode": "bearer",
                   "bearer": {

@@ -1,6 +1,6 @@
 services:
   mongo:
-    image: mongo:latest
+    image: mongo
     container_name: mongo
     restart: unless-stopped
     ports:
@@ -12,7 +12,7 @@ services:
     env_file: [.env-mongo, .env]
 
   mongo-express:
-    image: mongo-express:latest
+    image: mongo-express
     container_name: mongo-express
     restart: unless-stopped
     ports:
