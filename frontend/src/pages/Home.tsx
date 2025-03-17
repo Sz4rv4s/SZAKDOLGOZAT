@@ -119,68 +119,94 @@ export const Home: FC = () => {
   };
 
   return (
-    <div>
-      <h1>Upcoming matches</h1>
-      <ul>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Upcoming matches</h1>
+      <ul className="space-y-2">
         {matches.map((match) => (
-          <li key={match.id}>
-            {match.homeTeamShortName} vs {match.awayTeamShortName} -{" "}
-            {formatDateTime(match.utcDate)}{" "}
-            <button onClick={() => openBetModal(match)}>Bet</button>
+          <li
+            key={match.id}
+            className="flex items-center justify-between bg-gray-100 p-2 rounded"
+          >
+            <span>
+              {match.homeTeamShortName} vs {match.awayTeamShortName} -{" "}
+              {formatDateTime(match.utcDate)}
+            </span>
+            <button
+              onClick={() => openBetModal(match)}
+              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+            >
+              Make bet
+            </button>
           </li>
         ))}
       </ul>
 
       {selectedMatch && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20%",
-            left: "20%",
-            background: "white",
-            padding: "20px",
-            border: "1px solid black",
-          }}
-        >
-          <h2>
-            Create bet: {selectedMatch.homeTeamShortName} vs{" "}
-            {selectedMatch.awayTeamShortName}
-          </h2>
-          <p>Dátum: {formatDateTime(selectedMatch.utcDate)}</p>
-          {existingBet ? (
-            <p>
-              Existing bet: {existingBet.homeScoreBet} -{" "}
-              {existingBet.awayScoreBet}
-            </p>
-          ) : (
-            <p>There is no bet for this match, yet.</p>
-          )}
-          <div>
-            <label>
-              Home goals:
-              <input
-                type="number"
-                min="0"
-                value={homeScoreBet}
-                onChange={(e) => setHomeScoreBet(Number(e.target.value))}
-              />
-            </label>
-            <label>
-              Away goals:
-              <input
-                type="number"
-                min="0"
-                value={awayScoreBet}
-                onChange={(e) => setAwayScoreBet(Number(e.target.value))}
-              />
-            </label>
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+              <h2 className="text-xl font-semibold mb-4">
+                Make bet: {selectedMatch.homeTeamShortName} vs{" "}
+                {selectedMatch.awayTeamShortName}
+              </h2>
+              <p className="mb-2">
+                Dátum: {formatDateTime(selectedMatch.utcDate)}
+              </p>
+              {existingBet ? (
+                <p className="mb-4">
+                  Existing bet: {existingBet.homeScoreBet} -{" "}
+                  {existingBet.awayScoreBet}
+                </p>
+              ) : (
+                <p className="mb-4">You didn't bet on this match, yet.</p>
+              )}
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <label className="w-32">Home goals:</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={homeScoreBet}
+                    onChange={(e) => setHomeScoreBet(Number(e.target.value))}
+                    className="border rounded p-1 w-16"
+                  />
+                </div>
+                <div className="flex items-center space-x-2">
+                  <label className="w-32">Away goals:</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={awayScoreBet}
+                    onChange={(e) => setAwayScoreBet(Number(e.target.value))}
+                    className="border rounded p-1 w-16"
+                  />
+                </div>
+              </div>
+              <div className="mt-6 flex space-x-2">
+                <button
+                  onClick={handleBetSubmit}
+                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                >
+                  {existingBet ? "Update bet" : "Make bet"}
+                </button>
+                {existingBet && (
+                  <button
+                    onClick={handleCancelBet}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  >
+                    Cancel bet
+                  </button>
+                )}
+                <button
+                  onClick={closeBetModal}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
-          <button onClick={handleBetSubmit}>
-            {existingBet ? "Update" : "Create bet"}
-          </button>
-          {existingBet && <button onClick={handleCancelBet}>Delete bet</button>}
-          <button onClick={closeBetModal}>Close</button>
-        </div>
+        </>
       )}
     </div>
   );
