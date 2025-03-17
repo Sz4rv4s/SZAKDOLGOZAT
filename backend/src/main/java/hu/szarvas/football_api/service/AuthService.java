@@ -12,12 +12,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenBlacklistService tokenBlacklistService;
@@ -36,10 +38,11 @@ public class AuthService {
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .roles(Set.of("ROLE_USER"))
                 .build();
 
-        String jwtToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        String jwtToken = tokenService.generateAccessToken(user);
+        String refreshToken = tokenService.generateRefreshToken();
         user.setRefreshToken(refreshToken);
 
         userRepository.save(user);
@@ -61,8 +64,8 @@ public class AuthService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String jwtToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        String jwtToken = tokenService.generateAccessToken(user);
+        String refreshToken = tokenService.generateRefreshToken();
         user.setRefreshToken(refreshToken);
         userRepository.save(user);
 
@@ -74,14 +77,10 @@ public class AuthService {
 
     public AuthResponse refreshToken(RefreshTokenRequestDTO request) {
         String refreshToken = request.getRefreshToken();
-        if (!jwtService.isTokenValid(refreshToken)) {
-            throw new RuntimeException("Invalid refresh token");
-        }
-
         User user = userRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
 
-        String newAccessToken = jwtService.generateToken(user);
+        String newAccessToken = tokenService.generateAccessToken(user);
 
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
@@ -93,8 +92,7 @@ public class AuthService {
         tokenBlacklistService.blacklistToken(accessToken);
         tokenBlacklistService.blacklistToken(refreshToken);
 
-        String username = jwtService.extractUsername(refreshToken);
-        userRepository.findByUsername(username).ifPresent(user -> {
+        userRepository.findByRefreshToken(refreshToken).ifPresent(user -> {
             user.setRefreshToken(null);
             userRepository.save(user);
         });

@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserDetailsMapper {
-    public static UserDetails toUser(User user ) {
+    public static UserDetails toUser(User user) {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles("USER")
+                .roles(user.getRoles().toArray(new String[0]))
                 .build();
     }
 }

@@ -270,31 +270,50 @@ db.createCollection("users", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["_id", "email", "username", "password"],
+      required: ["_id", "email", "username", "password", "roles"],
       properties: {
         _id: {
           bsonType: "int",
+          minimum: 1,
           description: "The unique identifier of the user"
         },
         email: {
           bsonType: "string",
+          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
           description: "The unique email of the user"
         },
         username: {
           bsonType: "string",
+          minLength: 3,
+          maxLength: 20,
+          pattern: "^[a-zA-Z0-9_]+$",
           description: "The unique username of the user"
         },
         password: {
           bsonType: "string",
+          minLength: 6,
           description: "The password of the user"
         },
         refreshToken: {
           bsonType: ["string", "null"],
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$|^$",
           description: "The refresh token of the user if logged in"
+        },
+        roles: {
+          bsonType: "array",
+          minItems: 1,
+          items: {
+            bsonType: "string",
+            enum: ["ROLE_USER", "ROLE_ADMIN"],
+            description: "A role assigned to the user"
+          },
+          description: "The roles assigned to the user (e.g., ROLE_USER, ROLE_ADMIN)"
         }
       }
     }
-  }
+  },
+  validationLevel: "strict",
+  validationAction: "error"
 });
 
 db.createCollection("match_score_bets", {

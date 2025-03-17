@@ -1,8 +1,6 @@
 package hu.szarvas.football_api.service;
 
 import hu.szarvas.football_api.model.*;
-import hu.szarvas.football_api.repository.MatchRepository;
-import hu.szarvas.football_api.repository.MatchScoreBetRepository;
 import hu.szarvas.football_api.repository.UserPointsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

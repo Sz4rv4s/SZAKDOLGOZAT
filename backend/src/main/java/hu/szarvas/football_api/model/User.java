@@ -7,6 +7,9 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 @Document(collection = "users")
@@ -25,4 +28,7 @@ public class User {
 
     private String password;
     private String refreshToken;
+
+    @Builder.Default
+    private Set<String> roles = new HashSet<>();
 }

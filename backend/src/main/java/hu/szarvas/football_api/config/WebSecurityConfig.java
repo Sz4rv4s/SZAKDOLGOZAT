@@ -3,8 +3,8 @@ package hu.szarvas.football_api.config;
 import hu.szarvas.football_api.mapper.response.UserDetailsMapper;
 import hu.szarvas.football_api.repository.UserRepository;
 import hu.szarvas.football_api.security.JwtAuthenticationFilter;
-import hu.szarvas.football_api.service.JwtService;
 import hu.szarvas.football_api.service.TokenBlacklistService;
+import hu.szarvas.football_api.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final TokenService tokenService;
     private final TokenBlacklistService tokenBlacklistService;
 
     @Bean
@@ -38,7 +38,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/data/**").authenticated()
+                        .requestMatchers("/api/data/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -52,7 +52,7 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtService, userDetailsService(), tokenBlacklistService);
+        return new JwtAuthenticationFilter(tokenService, userDetailsService(), tokenBlacklistService);
     }
 
     @Bean

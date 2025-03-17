@@ -35,7 +35,7 @@ public class FootballController {
         return footballService.getLeagues();
     }
 
-    @GetMapping("/get/{leagueId}/upcomingmatches")
+    @GetMapping("/get/{leagueId}/upcoming-matches")
     public ResponseEntity<MatchResponseDTO> getUpcomingMatchesForLeague(@PathVariable Integer leagueId) {
         return footballService.getUpcomingMatchesForLeague(leagueId);
     }

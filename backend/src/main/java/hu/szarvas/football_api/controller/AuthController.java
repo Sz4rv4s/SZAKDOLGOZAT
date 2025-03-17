@@ -6,6 +6,7 @@ import hu.szarvas.football_api.dto.request.RefreshTokenRequestDTO;
 import hu.szarvas.football_api.dto.request.RegisterRequestDTO;
 import hu.szarvas.football_api.dto.response.AuthResponse;
 import hu.szarvas.football_api.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,24 +18,24 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequestDTO request) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequestDTO request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequestDTO request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshTokenRequestDTO request) {
+    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshTokenRequestDTO request) {
         return ResponseEntity.ok(authService.refreshToken(request));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
             @RequestHeader("Authorization") String authHeader,
-            @RequestBody LogoutRequestDTO request) {
+            @Valid @RequestBody LogoutRequestDTO request) {
         authService.logout(authHeader.substring(7), request.getRefreshToken());
         return ResponseEntity.ok().build();
     }

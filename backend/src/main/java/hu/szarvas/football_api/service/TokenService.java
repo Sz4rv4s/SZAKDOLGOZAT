@@ -11,18 +11,16 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
-public class JwtService {
+public class TokenService {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
     @Value("${jwt.expiration}")
     private long JWT_EXPIRATION;
-
-    @Value("${jwt.refresh-expiration}")
-    private long REFRESH_EXPIRATION;
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = SECRET_KEY.getBytes();
@@ -52,17 +50,18 @@ public class JwtService {
 
     }
 
-    public String generateToken(User user) {
-        return generateToken(new HashMap<>(), user, JWT_EXPIRATION);
+    public String generateAccessToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", user.getRoles());
+        return generateToken(claims, user, JWT_EXPIRATION);
     }
 
-    public String generateRefreshToken(User user) {
-        return generateToken(new HashMap<>(), user, REFRESH_EXPIRATION);
+    public String generateRefreshToken() {
+        return UUID.randomUUID().toString();
     }
 
     private String generateToken(Map<String, Object> extraClaims, User user, long expiration) {
-        return Jwts
-                .builder()
+        return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))

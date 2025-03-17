@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataController {
     private final DataFetchService dataFetchService;
 
-    @PostMapping("/fetchareas")
+    @PostMapping("/fetch-areas")
     public ResponseEntity<Void> fetchAreas() {
         try {
             dataFetchService.fetchAndSaveAreas();
@@ -25,7 +25,7 @@ public class DataController {
         }
     }
 
-    @PostMapping("/fetchcompetitionswithseasons")
+    @PostMapping("/fetch-competitions-with-seasons")
     public ResponseEntity<Void> fetchCompetitionsWithSeasons() {
         try {
             dataFetchService.fetchAndSaveCompetitionsWithSeasons();
@@ -35,7 +35,7 @@ public class DataController {
         }
     }
 
-    @PostMapping("/fetchteamswithplayers")
+    @PostMapping("/fetch-teams-with-players")
     public ResponseEntity<Void> fetchTeamsWithPlayers() {
         try {
             dataFetchService.fetchAndSaveTeamsWithPlayers();
@@ -45,7 +45,7 @@ public class DataController {
         }
     }
 
-    @PostMapping("/fetchmatches")
+    @PostMapping("/fetch-matches")
     public ResponseEntity<Void> fetchMatches() {
         try {
             dataFetchService.fetchAndSaveMatches();
