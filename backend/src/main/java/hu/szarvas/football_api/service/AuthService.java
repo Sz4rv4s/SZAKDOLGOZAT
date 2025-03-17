@@ -50,6 +50,8 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .user(user.getUsername())
+                .userId(user.getId())
                 .build();
     }
 
@@ -72,6 +74,8 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .user(user.getUsername())
+                .userId(user.getId())
                 .build();
     }
 
@@ -81,10 +85,13 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
 
         String newAccessToken = tokenService.generateAccessToken(user);
+        String newRefreshToken = tokenService.generateRefreshToken();
 
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(newRefreshToken)
+                .user(user.getUsername())
+                .userId(user.getId())
                 .build();
     }
 

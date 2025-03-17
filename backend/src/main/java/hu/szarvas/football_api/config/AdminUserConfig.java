@@ -39,7 +39,7 @@ public class AdminUserConfig {
                         .username(adminUsername)
                         .email(adminEmail)
                         .password(passwordEncoder.encode(adminPassword))
-                        .roles(Set.of("ADMIN"))
+                        .roles(Set.of("ADMIN", "USER"))
                         .refreshToken(null)
                         .build();
 

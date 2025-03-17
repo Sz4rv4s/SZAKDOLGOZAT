@@ -30,6 +30,24 @@ public class FootballController {
         return footballService.makeMatchScoreBet(bet);
     }
 
+    @GetMapping("/bets/match-score/{userId}/{matchId}")
+    public ResponseEntity<?> getMatchScoreBet(@PathVariable Integer userId, @PathVariable Integer matchId) {
+        return footballService.getMatchScoreBet(userId, matchId);
+    }
+
+    @PatchMapping("/bets/match-score/{userId}/{matchId}")
+    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(
+            @PathVariable Integer userId, @PathVariable Integer matchId,
+            @RequestBody MatchScoreBet bet
+    ) {
+        return footballService.updateMatchScoreBet(userId, matchId, bet);
+    }
+
+    @DeleteMapping("/bets/match-score/{userId}/{matchId}")
+    public ResponseEntity<DefaultResponseDTO> cancelMatchScoreBet(@PathVariable Integer userId, @PathVariable Integer matchId) {
+        return footballService.cancelMatchScoreBet(userId, matchId);
+    }
+
     @GetMapping("/get/leagues")
     public ResponseEntity<CompetitionResponseDTO> getLeagues() {
         return footballService.getLeagues();

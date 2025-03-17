@@ -27,3 +27,4 @@ logging:
   level:
     org.springframework.data.mongodb: DEBUG
     hu.szarvas.backend: DEBUG
+    org.springframework.security: DEBUG

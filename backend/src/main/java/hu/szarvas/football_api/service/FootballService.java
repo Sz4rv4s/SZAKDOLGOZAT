@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -132,7 +133,7 @@ public class FootballService {
                     leagueId,
                     List.of(Status.SCHEDULED, Status.TIMED),
                     Instant.now(),
-                    Instant.now().plus(Duration.ofDays(7))
+                    Instant.now().plus(Duration.ofDays(28))
             );
 
             if (matches.isEmpty()) {
@@ -197,6 +198,117 @@ public class FootballService {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(MatchScoreBetResponseDTO.builder()
+                            .success(false)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
+
+    public ResponseEntity<?> getMatchScoreBet(Integer userId, Integer matchId) {
+        try {
+            Optional<MatchScoreBet> bet = matchScoreBetRepository.findByUserIdAndMatchId(userId, matchId);
+            if (bet.isPresent()) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(MatchScoreBetResponseDTO.builder()
+                                .success(true)
+                                .message("Bet found for user " + userId)
+                                .matchScoreBet(List.of(matchScoreBetMapper.toMatchScoreBetDTO(bet.get())))
+                                .build()
+                        );
+            }
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(DefaultResponseDTO.builder()
+                            .success(true)
+                            .message("Bet not found for user " + userId)
+                            .build()
+                    );
+        } catch (Exception e) {
+            log.error("Error retrieving bet for match {}: {}", matchId, e.getMessage(), e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(DefaultResponseDTO.builder()
+                            .success(false)
+                            .message(e.getMessage())
+                            .build()
+                    );
+        }
+    }
+
+    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(Integer userId, Integer matchId, MatchScoreBet updatedBet) {
+        try {
+            Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(userId, matchId);
+            if (existingBet.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(DefaultResponseDTO.builder()
+                                .success(false)
+                                .message("No bet found to update for match: " + matchId)
+                                .build());
+            }
+            Match match = matchRepository.getMatchById(matchId);
+            if (match == null || !List.of(Status.SCHEDULED, Status.TIMED).contains(match.getStatus())) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(DefaultResponseDTO.builder()
+                                .success(false)
+                                .message("Match not found or already started: " + matchId)
+                                .build());
+            }
+            MatchScoreBet bet = existingBet.get();
+            bet.setHomeScoreBet(updatedBet.getHomeScoreBet());
+            bet.setAwayScoreBet(updatedBet.getAwayScoreBet());
+            matchScoreBetRepository.save(bet);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(DefaultResponseDTO.builder()
+                            .success(true)
+                            .message("Bet updated successfully for match: " + matchId)
+                            .build());
+        } catch (Exception e) {
+            log.error("Error updating bet for match {}: {}", matchId, e.getMessage(), e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(DefaultResponseDTO.builder()
+                            .success(false)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
+
+    public ResponseEntity<DefaultResponseDTO> cancelMatchScoreBet(Integer userId, Integer matchId) {
+        try {
+            Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(userId, matchId);
+            if (existingBet.isEmpty()) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(DefaultResponseDTO.builder()
+                                .success(false)
+                                .message("No bet found to cancel for match: " + matchId)
+                                .build());
+            }
+            Match match = matchRepository.getMatchById(matchId);
+            if (match == null || !List.of(Status.SCHEDULED, Status.TIMED).contains(match.getStatus())) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(DefaultResponseDTO.builder()
+                                .success(false)
+                                .message("Match not found or already started: " + matchId)
+                                .build());
+            }
+            matchScoreBetRepository.delete(existingBet.get());
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(DefaultResponseDTO.builder()
+                            .success(true)
+                            .message("Bet cancelled successfully for match: " + matchId)
+                            .build());
+        } catch (Exception e) {
+            log.error("Error cancelling bet for match {}: {}", matchId, e.getMessage(), e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(DefaultResponseDTO.builder()
                             .success(false)
                             .message(e.getMessage())
                             .build());
