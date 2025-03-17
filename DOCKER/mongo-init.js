@@ -304,7 +304,7 @@ db.createCollection("users", {
           minItems: 1,
           items: {
             bsonType: "string",
-            enum: ["ROLE_USER", "ROLE_ADMIN"],
+            enum: ["USER", "ADMIN"],
             description: "A role assigned to the user"
           },
           description: "The roles assigned to the user (e.g., ROLE_USER, ROLE_ADMIN)"

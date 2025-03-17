@@ -17,7 +17,11 @@ api:
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION}
-  refresh-expiration: ${REFRESH_EXPIRATION}
+
+admin:
+  username: ${ADMIN_USERNAME}
+  email: ${ADMIN_EMAIL}
+  password: ${ADMIN_PASSWORD}
 
 logging:
   level:

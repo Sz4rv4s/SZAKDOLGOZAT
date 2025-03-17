@@ -38,7 +38,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Set.of("ROLE_USER"))
+                .roles(Set.of("USER"))
                 .build();
 
         String jwtToken = tokenService.generateAccessToken(user);
