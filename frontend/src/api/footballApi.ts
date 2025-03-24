@@ -42,6 +42,7 @@ export const makeMatchScoreBet = async (bet: {
   date: string;
 }): Promise<ApiResponse<DefaultResponse>> => {
   try {
+    console.log("Request: ", bet);
     const response = await api.post("/football/bets/match-score", bet);
     return { success: true, data: response.data, error: null };
   } catch (error) {
@@ -51,11 +52,14 @@ export const makeMatchScoreBet = async (bet: {
 
 export const getMatchScoreBet = async (
   matchId: number,
+  userId: number,
 ): Promise<
   ApiResponse<{ bet: { homeScoreBet: number; awayScoreBet: number } | null }>
 > => {
   try {
-    const response = await api.get(`/football/bets/match-score/${matchId}`);
+    const response = await api.get(
+      `/football/bets/match-score/${userId}/${matchId}`,
+    );
     return { success: true, data: response.data, error: null };
   } catch (error) {
     return { success: false, data: null, error: String(error) };
@@ -64,11 +68,12 @@ export const getMatchScoreBet = async (
 
 export const updateMatchScoreBet = async (
   matchId: number,
+  userId: number,
   bet: { homeScoreBet: number; awayScoreBet: number },
 ): Promise<ApiResponse<DefaultResponse>> => {
   try {
     const response = await api.put(
-      `/football/bets/match-score/${matchId}`,
+      `/football/bets/match-score/${userId}/${matchId}`,
       bet,
     );
     return { success: true, data: response.data, error: null };
@@ -79,9 +84,12 @@ export const updateMatchScoreBet = async (
 
 export const cancelMatchScoreBet = async (
   matchId: number,
+  userId: number,
 ): Promise<ApiResponse<DefaultResponse>> => {
   try {
-    const response = await api.delete(`/football/bets/match-score/${matchId}`);
+    const response = await api.delete(
+      `/football/bets/match-score/${userId}/${matchId}`,
+    );
     return { success: true, data: response.data, error: null };
   } catch (error) {
     return { success: false, data: null, error: String(error) };

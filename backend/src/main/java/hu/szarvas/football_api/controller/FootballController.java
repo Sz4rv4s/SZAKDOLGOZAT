@@ -35,12 +35,11 @@ public class FootballController {
         return footballService.getMatchScoreBet(userId, matchId);
     }
 
-    @PatchMapping("/bets/match-score/{userId}/{matchId}")
-    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(
-            @PathVariable Integer userId, @PathVariable Integer matchId,
+    @PatchMapping("/bets/match-score/{matchId}")
+    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(@PathVariable Integer matchId,
             @RequestBody MatchScoreBet bet
     ) {
-        return footballService.updateMatchScoreBet(userId, matchId, bet);
+        return footballService.updateMatchScoreBet(matchId, bet);
     }
 
     @DeleteMapping("/bets/match-score/{userId}/{matchId}")

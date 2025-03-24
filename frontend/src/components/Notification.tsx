@@ -14,7 +14,7 @@ export const Notification = () => {
 
   return (
     <div
-      className={`fixed top-4 right-4 p-4 rounded-lg text-white ${bgColor} shadow-lg`}
+      className={`fixed top-20 right-10 p-4 rounded-lg text-white ${bgColor} shadow-lg`}
     >
       <p>{message}</p>
       <button onClick={clearNotification} className="ml-2 text-sm underline">

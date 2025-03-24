@@ -236,9 +236,9 @@ public class FootballService {
         }
     }
 
-    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(Integer userId, Integer matchId, MatchScoreBet updatedBet) {
+    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(Integer matchId, MatchScoreBet updatedBet) {
         try {
-            Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(userId, matchId);
+            Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(updatedBet.getUserId(), matchId);
             if (existingBet.isEmpty()) {
                 return ResponseEntity
                         .status(HttpStatus.OK)

@@ -70,7 +70,7 @@ export const Home: FC = () => {
     setSelectedMatch(match);
     setHomeScoreBet(0);
     setAwayScoreBet(0);
-    const betResult = await getMatchScoreBet(match.id);
+    const betResult = await getMatchScoreBet(Number(userId), match.id);
     if (betResult.success && betResult.data?.bet) {
       setExistingBet(betResult.data.bet);
       setHomeScoreBet(betResult.data.bet.homeScoreBet);
@@ -97,7 +97,10 @@ export const Home: FC = () => {
       date: nowDateTime(),
     };
     const result = await (existingBet
-      ? updateMatchScoreBet(selectedMatch.id, { homeScoreBet, awayScoreBet })
+      ? updateMatchScoreBet(Number(userId), selectedMatch.id, {
+          homeScoreBet,
+          awayScoreBet,
+        })
       : makeMatchScoreBet(bet));
     if (result.success) {
       alert(result.data?.message || "Bet processed successfully");
@@ -109,7 +112,7 @@ export const Home: FC = () => {
 
   const handleCancelBet = async () => {
     if (!selectedMatch) return;
-    const result = await cancelMatchScoreBet(selectedMatch.id);
+    const result = await cancelMatchScoreBet(Number(userId), selectedMatch.id);
     if (result.success) {
       alert(result.data?.message || "Bet cancelled successfully");
       closeBetModal();
