@@ -17,6 +17,7 @@ declare interface UserProfile {
   refreshToken: string;
   user: string;
   userId: number;
+  roles: string[];
 }
 
 interface AuthState {
@@ -24,6 +25,7 @@ interface AuthState {
   refreshToken: string | null;
   user: string | null;
   userId: string | null;
+  roles: string[] | null;
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (
@@ -102,4 +104,48 @@ declare interface NotificationState {
 export interface ApiErrorResponse {
   message?: string;
   [key: string]: string | null;
+}
+
+declare interface MatchScoreBetDTO {
+  id: number;
+  userId: number;
+  userName: string;
+  matchId: number;
+  homeTeamId: number;
+  awayTeamId: number;
+  homeTeamShortName: string;
+  awayTeamShortName: string;
+  homeScoreBet: number;
+  awayScoreBet: number;
+  homeScore: number | null;
+  awayScore: number | null;
+  status: string;
+  points: number | null;
+  dateOfBet: string;
+  dateOfMatch: string;
+}
+
+declare interface MatchScoreBetResponseDTO {
+  success: boolean;
+  message: string;
+  matchScoreBet: MatchScoreBetDTO[];
+}
+
+declare type GetMatchScoreBetResponse =
+  | MatchScoreBetResponseDTO
+  | DefaultResponse;
+
+declare interface LeaderboardEntry {
+  userId: number;
+  totalPoints: number;
+}
+
+declare interface UserResponseDTO {
+  id: number;
+  username: string;
+  email: string;
+}
+
+declare interface LeaderboardUser extends LeaderboardEntry {
+  username: string;
 }

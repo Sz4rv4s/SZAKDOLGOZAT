@@ -28,6 +28,12 @@ export const Header = () => {
       <nav className="flex items-center space-x-4">
         {isAuthenticated ? (
           <>
+            <Link
+              to="/leaderboards"
+              className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded"
+            >
+              Leaderboards
+            </Link>
             <span className="text-md">Welcome, {user || "User"}</span>
             <button
               onClick={handleLogout}
@@ -56,3 +62,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;

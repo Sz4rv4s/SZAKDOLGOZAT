@@ -4,6 +4,7 @@ import hu.szarvas.football_api.dto.response.*;
 import hu.szarvas.football_api.mapper.response.MatchResponseMapper;
 import hu.szarvas.football_api.mapper.response.MatchScoreBetMapper;
 import hu.szarvas.football_api.model.*;
+import hu.szarvas.football_api.model.UpdateBetDTO;
 import hu.szarvas.football_api.repository.CompetitionRepository;
 import hu.szarvas.football_api.repository.MatchRepository;
 import hu.szarvas.football_api.repository.MatchScoreBetRepository;
@@ -236,38 +237,39 @@ public class FootballService {
         }
     }
 
-    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(Integer matchId, MatchScoreBet updatedBet) {
+    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(Integer userId, UpdateBetDTO updatedBet) {
         try {
-            Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(updatedBet.getUserId(), matchId);
+            Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(userId, updatedBet.getMatchId());
             if (existingBet.isEmpty()) {
                 return ResponseEntity
                         .status(HttpStatus.OK)
                         .body(DefaultResponseDTO.builder()
                                 .success(false)
-                                .message("No bet found to update for match: " + matchId)
+                                .message("No bet found to update for match: " + updatedBet.getMatchId())
                                 .build());
             }
-            Match match = matchRepository.getMatchById(matchId);
+            Match match = matchRepository.getMatchById(updatedBet.getMatchId());
             if (match == null || !List.of(Status.SCHEDULED, Status.TIMED).contains(match.getStatus())) {
                 return ResponseEntity
                         .status(HttpStatus.OK)
                         .body(DefaultResponseDTO.builder()
                                 .success(false)
-                                .message("Match not found or already started: " + matchId)
+                                .message("Match not found or already started: " + updatedBet.getMatchId())
                                 .build());
             }
             MatchScoreBet bet = existingBet.get();
             bet.setHomeScoreBet(updatedBet.getHomeScoreBet());
             bet.setAwayScoreBet(updatedBet.getAwayScoreBet());
+            bet.setDate(Instant.now());
             matchScoreBetRepository.save(bet);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(DefaultResponseDTO.builder()
                             .success(true)
-                            .message("Bet updated successfully for match: " + matchId)
+                            .message("Bet updated successfully for match: " + updatedBet.getMatchId())
                             .build());
         } catch (Exception e) {
-            log.error("Error updating bet for match {}: {}", matchId, e.getMessage(), e);
+            log.error("Error updating bet for match {}: {}", updatedBet.getMatchId(), e.getMessage(), e);
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(DefaultResponseDTO.builder()

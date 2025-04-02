@@ -5,6 +5,7 @@ import { Home } from "./pages/Home";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Header } from "./components/Header.tsx";
 import { Notification } from "./components/Notification.tsx";
+import Leaderboards from "./pages/Leaderboards.tsx";
 
 function App() {
   return (
@@ -21,6 +22,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/leaderboards"
+              element={
+                <ProtectedRoute>
+                  <Leaderboards />
                 </ProtectedRoute>
               }
             />

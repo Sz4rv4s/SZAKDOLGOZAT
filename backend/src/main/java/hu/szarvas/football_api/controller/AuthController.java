@@ -4,7 +4,7 @@ import hu.szarvas.football_api.dto.request.LoginRequestDTO;
 import hu.szarvas.football_api.dto.request.LogoutRequestDTO;
 import hu.szarvas.football_api.dto.request.RefreshTokenRequestDTO;
 import hu.szarvas.football_api.dto.request.RegisterRequestDTO;
-import hu.szarvas.football_api.dto.response.AuthResponse;
+import hu.szarvas.football_api.dto.response.AuthResponseDTO;
 import hu.szarvas.football_api.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +18,17 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequestDTO request) {
+    public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequestDTO request) {
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshTokenRequestDTO request) {
+    public ResponseEntity<AuthResponseDTO> refresh(@Valid @RequestBody RefreshTokenRequestDTO request) {
         return ResponseEntity.ok(authService.refreshToken(request));
     }
 

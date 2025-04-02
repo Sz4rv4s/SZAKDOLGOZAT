@@ -10,17 +10,20 @@ const setAuthData = (
     refreshToken: string;
     user: string;
     userId: number;
+    roles: string[];
   },
 ) => {
   localStorage.setItem("accessToken", data.accessToken);
   localStorage.setItem("refreshToken", data.refreshToken);
   localStorage.setItem("user", data.user);
   localStorage.setItem("userId", data.userId.toString());
+  localStorage.setItem("roles", JSON.stringify(data.roles)); // Store as JSON string
   set({
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
     user: data.user,
     userId: data.userId.toString(),
+    roles: data.roles,
     isAuthenticated: true,
   });
 };
@@ -30,11 +33,13 @@ const clearAuthData = (set: (state: Partial<AuthState>) => void) => {
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("user");
   localStorage.removeItem("userId");
+  localStorage.removeItem("roles");
   set({
     accessToken: null,
     refreshToken: null,
     user: null,
     userId: null,
+    roles: null,
     isAuthenticated: false,
   });
 };
@@ -44,6 +49,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   refreshToken: localStorage.getItem("refreshToken"),
   user: localStorage.getItem("user"),
   userId: localStorage.getItem("userId"),
+  roles: localStorage.getItem("roles")
+    ? JSON.parse(localStorage.getItem("roles")!)
+    : null, // Parse JSON string back to array
   isAuthenticated: !!localStorage.getItem("accessToken"),
   login: async (username: string, password: string) => {
     const result = await login({ username, password });
@@ -108,6 +116,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         refreshToken: null,
         user: null,
         userId: null,
+        roles: null,
         isAuthenticated: false,
       });
       return {

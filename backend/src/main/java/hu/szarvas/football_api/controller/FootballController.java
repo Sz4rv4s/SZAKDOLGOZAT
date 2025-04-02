@@ -6,6 +6,7 @@ import hu.szarvas.football_api.dto.response.MatchResponseDTO;
 import hu.szarvas.football_api.dto.response.MatchScoreBetResponseDTO;
 import hu.szarvas.football_api.model.BetStatus;
 import hu.szarvas.football_api.model.MatchScoreBet;
+import hu.szarvas.football_api.model.UpdateBetDTO;
 import hu.szarvas.football_api.service.FootballService;
 import hu.szarvas.football_api.service.SequenceGeneratorService;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +36,12 @@ public class FootballController {
         return footballService.getMatchScoreBet(userId, matchId);
     }
 
-    @PatchMapping("/bets/match-score/{matchId}")
-    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(@PathVariable Integer matchId,
-            @RequestBody MatchScoreBet bet
+    @PatchMapping("/bets/match-score/{userId}")
+    public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(
+            @PathVariable Integer userId,
+            @RequestBody UpdateBetDTO updatedBet
     ) {
-        return footballService.updateMatchScoreBet(matchId, bet);
+        return footballService.updateMatchScoreBet(userId, updatedBet);
     }
 
     @DeleteMapping("/bets/match-score/{userId}/{matchId}")

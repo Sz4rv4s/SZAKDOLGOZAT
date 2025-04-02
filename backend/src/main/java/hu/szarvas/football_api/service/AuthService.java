@@ -3,7 +3,7 @@ package hu.szarvas.football_api.service;
 import hu.szarvas.football_api.dto.request.LoginRequestDTO;
 import hu.szarvas.football_api.dto.request.RefreshTokenRequestDTO;
 import hu.szarvas.football_api.dto.request.RegisterRequestDTO;
-import hu.szarvas.football_api.dto.response.AuthResponse;
+import hu.szarvas.football_api.dto.response.AuthResponseDTO;
 import hu.szarvas.football_api.model.User;
 import hu.szarvas.football_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthService {
     private final TokenBlacklistService tokenBlacklistService;
     private final SequenceGeneratorService sequenceGenerator;
 
-    public AuthResponse register(RegisterRequestDTO request) {
+    public AuthResponseDTO register(RegisterRequestDTO request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -47,7 +47,7 @@ public class AuthService {
 
         userRepository.save(user);
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .user(user.getUsername())
@@ -55,7 +55,7 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponse login(LoginRequestDTO request) {
+    public AuthResponseDTO login(LoginRequestDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -71,7 +71,7 @@ public class AuthService {
         user.setRefreshToken(refreshToken);
         userRepository.save(user);
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .user(user.getUsername())
@@ -79,7 +79,7 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponse refreshToken(RefreshTokenRequestDTO request) {
+    public AuthResponseDTO refreshToken(RefreshTokenRequestDTO request) {
         String refreshToken = request.getRefreshToken();
         User user = userRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
@@ -87,7 +87,7 @@ public class AuthService {
         String newAccessToken = tokenService.generateAccessToken(user);
         String newRefreshToken = tokenService.generateRefreshToken();
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
                 .user(user.getUsername())
