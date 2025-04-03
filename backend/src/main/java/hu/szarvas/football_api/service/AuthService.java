@@ -41,6 +41,10 @@ public class AuthService {
                 .roles(Set.of("USER"))
                 .build();
 
+        return getAuthResponse(user);
+    }
+
+    private AuthResponseDTO getAuthResponse(User user) {
         String jwtToken = tokenService.generateAccessToken(user);
         String refreshToken = tokenService.generateRefreshToken();
         user.setRefreshToken(refreshToken);
@@ -52,6 +56,7 @@ public class AuthService {
                 .refreshToken(refreshToken)
                 .user(user.getUsername())
                 .userId(user.getId())
+                .roles(user.getRoles())
                 .build();
     }
 
@@ -66,17 +71,7 @@ public class AuthService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String jwtToken = tokenService.generateAccessToken(user);
-        String refreshToken = tokenService.generateRefreshToken();
-        user.setRefreshToken(refreshToken);
-        userRepository.save(user);
-
-        return AuthResponseDTO.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .user(user.getUsername())
-                .userId(user.getId())
-                .build();
+        return getAuthResponse(user);
     }
 
     public AuthResponseDTO refreshToken(RefreshTokenRequestDTO request) {

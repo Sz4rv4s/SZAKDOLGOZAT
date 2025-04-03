@@ -25,7 +25,7 @@ interface AuthState {
   refreshToken: string | null;
   user: string | null;
   userId: string | null;
-  roles: string[] | null;
+  roles: string | null;
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (

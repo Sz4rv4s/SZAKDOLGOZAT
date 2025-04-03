@@ -6,6 +6,7 @@ import {
   GetMatchScoreBetResponse,
   LeaderboardEntry,
   MatchResponse,
+  MatchScoreBetResponseDTO,
   UserResponseDTO,
 } from "../types/types";
 
@@ -154,6 +155,71 @@ export const getUser = async (
       success: false,
       data: null,
       error: String(error),
+    };
+  }
+};
+
+export const getUserBets = async (
+  userId: number,
+): Promise<ApiResponse<MatchScoreBetResponseDTO>> => {
+  try {
+    const response = await api.get(`/football/get/${userId}/bets/match-score`);
+    return { success: true, data: response.data, error: null };
+  } catch (error) {
+    return { success: false, data: null, error: String(error) };
+  }
+};
+
+export const fetchAreas = async (): Promise<ApiResponse<void>> => {
+  try {
+    await api.post(`/data/fetch-areas`);
+    return { success: true, data: undefined, error: null };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: String(error) || "Failed to fetch areas",
+    };
+  }
+};
+
+export const fetchCompetitionsWithSeasons = async (): Promise<
+  ApiResponse<void>
+> => {
+  try {
+    await api.post(`/data/fetch-competitions-with-seasons`);
+    return { success: true, data: undefined, error: null };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: String(error) || "Failed to fetch competitions with seasons",
+    };
+  }
+};
+
+export const fetchTeamsWithPlayers = async (): Promise<ApiResponse<void>> => {
+  try {
+    await api.post(`/data/fetch-teams-with-players`);
+    return { success: true, data: undefined, error: null };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: String(error) || "Failed to fetch teams with players",
+    };
+  }
+};
+
+export const fetchMatches = async (): Promise<ApiResponse<void>> => {
+  try {
+    await api.post(`/data/fetch-matches`);
+    return { success: true, data: undefined, error: null };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: String(error) || "Failed to fetch matches",
     };
   }
 };

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,4 +16,5 @@ public class AuthResponseDTO {
     private String refreshToken;
     private String user;
     private Integer userId;
+    private Set<String> roles;
 }

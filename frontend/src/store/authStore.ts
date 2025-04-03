@@ -13,17 +13,23 @@ const setAuthData = (
     roles: string[];
   },
 ) => {
+  const highestRole = data.roles.includes("ADMIN")
+    ? "ADMIN"
+    : data.roles.includes("USER")
+      ? "USER"
+      : null;
+
   localStorage.setItem("accessToken", data.accessToken);
   localStorage.setItem("refreshToken", data.refreshToken);
   localStorage.setItem("user", data.user);
   localStorage.setItem("userId", data.userId.toString());
-  localStorage.setItem("roles", JSON.stringify(data.roles)); // Store as JSON string
+  localStorage.setItem("roles", highestRole || "");
   set({
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
     user: data.user,
     userId: data.userId.toString(),
-    roles: data.roles,
+    roles: highestRole,
     isAuthenticated: true,
   });
 };
@@ -49,13 +55,11 @@ export const useAuthStore = create<AuthState>((set) => ({
   refreshToken: localStorage.getItem("refreshToken"),
   user: localStorage.getItem("user"),
   userId: localStorage.getItem("userId"),
-  roles: localStorage.getItem("roles")
-    ? JSON.parse(localStorage.getItem("roles")!)
-    : null, // Parse JSON string back to array
+  roles: localStorage.getItem("roles") || null,
   isAuthenticated: !!localStorage.getItem("accessToken"),
   login: async (username: string, password: string) => {
     const result = await login({ username, password });
-    console.table(result);
+    console.log(result);
     if (result.success && result.data) {
       setAuthData(set, result.data);
     } else {

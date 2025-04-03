@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import SoccerBallIcon from "../assets/soccer-ball.svg";
 
 export const Header = () => {
-  const { isAuthenticated, logout, user } = useAuthStore();
+  const { isAuthenticated, logout, user, roles } = useAuthStore();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -33,6 +33,20 @@ export const Header = () => {
               className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded"
             >
               Leaderboards
+            </Link>
+            {roles === "ADMIN" && (
+              <Link
+                to="/admin"
+                className="bg-purple-500 hover:bg-purple-600 px-3 py-1 rounded"
+              >
+                Admin
+              </Link>
+            )}
+            <Link
+              to="/profile"
+              className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded"
+            >
+              Profile
             </Link>
             <span className="text-md">Welcome, {user || "User"}</span>
             <button
