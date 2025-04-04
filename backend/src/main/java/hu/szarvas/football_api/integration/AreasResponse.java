@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class AreasResponse {
-    private Integer count;
-    private Object filters;
-    private List<Area> areas;
+    Integer count;
+    Object filters;
+    List<Area> areas;
 }

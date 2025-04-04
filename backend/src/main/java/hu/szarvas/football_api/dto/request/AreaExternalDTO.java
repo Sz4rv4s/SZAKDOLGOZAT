@@ -6,8 +6,8 @@ import lombok.Data;
 @Builder
 @Data
 public class AreaExternalDTO {
-    private Integer id;
-    private String name;
-    private String code;
-    private String flag;
+    Integer id;
+    String name;
+    String code;
+    String flag;
 }

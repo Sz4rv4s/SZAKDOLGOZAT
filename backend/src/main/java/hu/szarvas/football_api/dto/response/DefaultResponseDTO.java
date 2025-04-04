@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DefaultResponseDTO {
-    private boolean success;
-    private String message;
+    boolean success;
+    String message;
 }

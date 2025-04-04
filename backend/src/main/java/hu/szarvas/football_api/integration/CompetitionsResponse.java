@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class CompetitionsResponse {
-    private Integer count;
-    private Object filters;
-    private List<CompetitionExternalDTO> competitions;
+    Integer count;
+    Object filters;
+    List<CompetitionExternalDTO> competitions;
 }

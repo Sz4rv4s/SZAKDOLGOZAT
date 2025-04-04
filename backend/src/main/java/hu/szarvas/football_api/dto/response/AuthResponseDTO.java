@@ -12,9 +12,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthResponseDTO {
-    private String accessToken;
-    private String refreshToken;
-    private String user;
-    private Integer userId;
-    private Set<String> roles;
+    String accessToken;
+    String refreshToken;
+    String user;
+    Integer userId;
+    Set<String> roles;
 }

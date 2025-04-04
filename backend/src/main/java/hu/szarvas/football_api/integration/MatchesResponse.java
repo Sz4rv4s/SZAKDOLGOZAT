@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 public class MatchesResponse {
-    private Object filter;
-    private Object resultSet;
-    private Object competition;
-    private List<MatchExternalDTO> matches;
+    Object filter;
+    Object resultSet;
+    Object competition;
+    List<MatchExternalDTO> matches;
 }

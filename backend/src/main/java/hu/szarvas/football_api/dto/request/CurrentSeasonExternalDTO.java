@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class CurrentSeasonExternalDTO {
-    private Integer id;
-    private String startDate;
-    private String endDate;
-    private Integer currentMatchday;
-    private WinnerExternalDTO winner;
+    Integer id;
+    String startDate;
+    String endDate;
+    Integer currentMatchday;
+    WinnerExternalDTO winner;
 }

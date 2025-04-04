@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class CompetitionResponseDTO {
-    private boolean success;
-    private String message;
+    boolean success;
+    String message;
     List<Competition> competitions;
 }

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateBetDTO {
-    private Integer matchId;
-    private Integer homeScoreBet;
-    private Integer awayScoreBet;
+    Integer matchId;
+    Integer homeScoreBet;
+    Integer awayScoreBet;
 
 }

@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class ScoreExternalDTO {
-    private Winner winner;
-    private String duration;
-    private GoalExternalDTO fullTime;
-    private GoalExternalDTO halfTime;
+    Winner winner;
+    String duration;
+    GoalExternalDTO fullTime;
+    GoalExternalDTO halfTime;
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class GoalExternalDTO {
-    private Integer home;
-    private Integer away;
+    Integer home;
+    Integer away;
 }
