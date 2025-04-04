@@ -28,6 +28,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+
+/**
+ * Configuration class for Spring Security setup including JWT authentication, CORS, and role-based access.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -37,11 +41,19 @@ public class WebSecurityConfig {
     private final TokenService tokenService;
     private final TokenBlacklistService tokenBlacklistService;
 
+    /**
+     * Configures the security filter chain, disables CSRF, enables CORS, and sets access rules for endpoints.
+     *
+     * @param http the HttpSecurity instance
+     * @return configured SecurityFilterChain
+     * @throws Exception if an error occurs while building the filter chain
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))                .authorizeHttpRequests(auth -> auth
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/data/**").hasRole("ADMIN")
                         .requestMatchers("/api/football/**").hasAnyRole("USER", "ADMIN")
@@ -59,6 +71,11 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    /**
+     * Configures allowed origins, headers, and methods for CORS.
+     *
+     * @return CorsConfigurationSource instance
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -72,11 +89,21 @@ public class WebSecurityConfig {
         return source;
     }
 
+    /**
+     * Provides a custom JwtAuthenticationFilter.
+     *
+     * @return JwtAuthenticationFilter instance
+     */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(tokenService, userDetailsService(), tokenBlacklistService);
     }
 
+    /**
+     * Loads user details by username from the UserRepository.
+     *
+     * @return UserDetailsService implementation
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
@@ -84,6 +111,11 @@ public class WebSecurityConfig {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    /**
+     * Configures authentication using a DAO-based provider.
+     *
+     * @return AuthenticationProvider instance
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -92,11 +124,23 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
+    /**
+     * Provides the AuthenticationManager bean.
+     *
+     * @param config AuthenticationConfiguration instance
+     * @return AuthenticationManager instance
+     * @throws Exception if configuration fails
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Configures the password encoder for encoding user passwords.
+     *
+     * @return PasswordEncoder instance
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

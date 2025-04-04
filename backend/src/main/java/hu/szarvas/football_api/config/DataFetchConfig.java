@@ -7,12 +7,21 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class responsible for triggering the initial football data fetch on application startup.
+ */
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
 public class DataFetchConfig {
+
     private final DataFetchService dataFetchService;
 
+    /**
+     * CommandLineRunner that initiates fetching of areas, competitions, teams, and players.
+     *
+     * @return CommandLineRunner instance
+     */
     @Bean
     public CommandLineRunner initDataFetch() {
         return args -> {

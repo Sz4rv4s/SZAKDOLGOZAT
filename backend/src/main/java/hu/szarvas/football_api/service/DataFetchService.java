@@ -23,6 +23,10 @@ import java.util.stream.Collectors;
 
 import static hu.szarvas.football_api.mapper.request.SeasonMapper.toSeason;
 
+/**
+ * Service class for fetching and storing football data from external APIs.
+ * Handles operations for areas, competitions, teams, players, and matches.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -37,6 +41,10 @@ public class DataFetchService {
 
     private static final TierPlan TIER = TierPlan.TIER_ONE;
 
+    /**
+     * Fetches and saves area data from external API.
+     *
+     */
     public void fetchAndSaveAreas() {
         try {
             log.debug("Starting area fetch from API");
@@ -76,6 +84,11 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Gets competition IDs based on tier plan and competition type.
+     *
+     * @return List of competition IDs
+     */
     private List<Integer> getIdsForPlanAndType() {
         return competitionRepository.findByPlanAndType(TIER, CompetitionType.LEAGUE)
                 .stream()
@@ -83,6 +96,11 @@ public class DataFetchService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Saves season data to database.
+     *
+     * @param competitions List of competition DTOs containing season data
+     */
     private void saveSeasons(List<CompetitionExternalDTO> competitions) {
         List<Season> seasons = competitions.stream()
                 .filter(comp -> comp.getCurrentSeason() != null)
@@ -100,6 +118,11 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Saves competition data to database.
+     *
+     * @param competitionExternalDTOS List of competition DTOs
+     */
     private void saveCompetitions(List<CompetitionExternalDTO> competitionExternalDTOS) {
         List<Competition> competitions = competitionExternalDTOS.stream()
                 .map(CompetitionMapper::toCompetition)
@@ -116,6 +139,10 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Fetches and saves competition data with associated seasons from external API.
+     *
+     */
     public void fetchAndSaveCompetitionsWithSeasons() {
         try {
             log.debug("Starting competitions fetch from API");
@@ -129,7 +156,6 @@ public class DataFetchService {
 
             if (response != null) {
                 saveSeasons(response.getCompetitions());
-
                 saveCompetitions(response.getCompetitions());
             } else {
                 log.error("API response was null");
@@ -140,6 +166,12 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Saves team data for a specific competition.
+     *
+     * @param competitionId The competition ID
+     * @param teamsResponse The API response containing team data
+     */
     private void saveTeam(Integer competitionId, TeamsResponse teamsResponse) {
         try {
             log.debug("Starting team fetch from API for league {}", competitionId);
@@ -163,6 +195,11 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Saves player data from teams response.
+     *
+     * @param teamsResponse The API response containing player data
+     */
     private void savePlayers(TeamsResponse teamsResponse) {
         try {
             log.debug("Saving player");
@@ -183,6 +220,10 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Fetches and saves team data with associated players for all competitions.
+     *
+     */
     public void fetchAndSaveTeamsWithPlayers() {
         List<Integer> competitionIds = getIdsForPlanAndType();
 
@@ -219,6 +260,11 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Saves match data to database.
+     *
+     * @param matchesResponse The API response containing match data
+     */
     private void saveMatches(MatchesResponse matchesResponse) {
         try {
             log.debug("Saving match");
@@ -238,6 +284,10 @@ public class DataFetchService {
         }
     }
 
+    /**
+     * Fetches and saves match data for all competitions.
+     *
+     */
     public void fetchAndSaveMatches() {
         List<Integer> competitionIds = getIdsForPlanAndType();
 

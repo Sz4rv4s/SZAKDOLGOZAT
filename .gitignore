@@ -20,3 +20,4 @@ BRUNO/SZAKDOLGOZAT
 /frontend/dist-ssr
 /frontend/*.local
 /frontend/.env
+backend/.vscode

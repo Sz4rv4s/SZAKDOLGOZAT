@@ -4,7 +4,7 @@ import hu.szarvas.football_api.dto.response.*;
 import hu.szarvas.football_api.mapper.response.MatchResponseMapper;
 import hu.szarvas.football_api.mapper.response.MatchScoreBetMapper;
 import hu.szarvas.football_api.model.*;
-import hu.szarvas.football_api.model.UpdateBetDTO;
+import hu.szarvas.football_api.dto.request.UpdateBetDTO;
 import hu.szarvas.football_api.repository.CompetitionRepository;
 import hu.szarvas.football_api.repository.MatchRepository;
 import hu.szarvas.football_api.repository.MatchScoreBetRepository;
@@ -19,6 +19,10 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class for handling football-related operations including match bets,
+ * competitions, and match data retrieval.
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +34,12 @@ public class FootballService {
     private final MatchResponseMapper matchResponseMapper;
     private final MatchScoreBetMapper matchScoreBetMapper;
 
+    /**
+     * Creates a new match score bet for a user.
+     *
+     * @param bet The match score bet to create
+     * @return ResponseEntity with operation status
+     */
     public ResponseEntity<DefaultResponseDTO> makeMatchScoreBet(MatchScoreBet bet) {
         try {
             Match match = matchRepository.getMatchById(bet.getMatchId());
@@ -70,12 +80,15 @@ public class FootballService {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(DefaultResponseDTO.builder()
-                        .success(false)
-                        .message(e.getMessage())
-                        .build());
+                            .success(false)
+                            .message(e.getMessage())
+                            .build());
         }
     }
 
+    /**
+     * Updates the status of active bets based on match results.
+     */
     public void updateBetStatuses() {
         try {
             List<MatchScoreBet> activeBets = matchScoreBetRepository.findByStatus(BetStatus.LIVE);
@@ -97,6 +110,11 @@ public class FootballService {
         }
     }
 
+    /**
+     * Retrieves all league competitions.
+     *
+     * @return ResponseEntity containing competition data
+     */
     public ResponseEntity<CompetitionResponseDTO> getLeagues() {
         try {
             List<Competition> leagues = competitionRepository.findByType(CompetitionType.LEAGUE);
@@ -115,7 +133,7 @@ public class FootballService {
                             .success(true)
                             .message("Leagues found")
                             .competitions(leagues)
-                    .build());
+                            .build());
 
         } catch (Exception e) {
             return ResponseEntity
@@ -125,9 +143,14 @@ public class FootballService {
                             .message(e.getMessage())
                             .build());
         }
-
     }
 
+    /**
+     * Retrieves upcoming matches for a specific league.
+     *
+     * @param leagueId The ID of the league
+     * @return ResponseEntity containing match data
+     */
     public ResponseEntity<MatchResponseDTO> getUpcomingMatchesForLeague(Integer leagueId) {
         try {
             List<Match> matches = matchRepository.getMatchByCompetitionIdAndStatusInAndUtcDateBetween(
@@ -169,6 +192,12 @@ public class FootballService {
         }
     }
 
+    /**
+     * Retrieves all match score bets for a specific user.
+     *
+     * @param userId The ID of the user
+     * @return ResponseEntity containing bet data
+     */
     public ResponseEntity<MatchScoreBetResponseDTO> getMatchScoreBetsForUser(Integer userId) {
         try {
             List<MatchScoreBet> matchScoreBets = matchScoreBetRepository.getMatchScoreBetByUserId(userId);
@@ -205,6 +234,13 @@ public class FootballService {
         }
     }
 
+    /**
+     * Retrieves a specific match score bet for a user.
+     *
+     * @param userId The ID of the user
+     * @param matchId The ID of the match
+     * @return ResponseEntity containing bet data or status
+     */
     public ResponseEntity<?> getMatchScoreBet(Integer userId, Integer matchId) {
         try {
             Optional<MatchScoreBet> bet = matchScoreBetRepository.findByUserIdAndMatchId(userId, matchId);
@@ -237,6 +273,13 @@ public class FootballService {
         }
     }
 
+    /**
+     * Updates an existing match score bet.
+     *
+     * @param userId The ID of the user
+     * @param updatedBet The updated bet data
+     * @return ResponseEntity with operation status
+     */
     public ResponseEntity<DefaultResponseDTO> updateMatchScoreBet(Integer userId, UpdateBetDTO updatedBet) {
         try {
             Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(userId, updatedBet.getMatchId());
@@ -279,6 +322,13 @@ public class FootballService {
         }
     }
 
+    /**
+     * Cancels an existing match score bet.
+     *
+     * @param userId The ID of the user
+     * @param matchId The ID of the match
+     * @return ResponseEntity with operation status
+     */
     public ResponseEntity<DefaultResponseDTO> cancelMatchScoreBet(Integer userId, Integer matchId) {
         try {
             Optional<MatchScoreBet> existingBet = matchScoreBetRepository.findByUserIdAndMatchId(userId, matchId);

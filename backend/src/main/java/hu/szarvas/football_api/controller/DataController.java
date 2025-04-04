@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for fetching and storing football data from external APIs.
+ */
 @RestController
 @RequestMapping("/api/data")
 @Slf4j
@@ -15,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataController {
     private final DataFetchService dataFetchService;
 
+    /**
+     * Fetches and stores area data from external source.
+     * @return 200 OK if successful
+     */
     @PostMapping("/fetch-areas")
     public ResponseEntity<Void> fetchAreas() {
         try {
@@ -25,6 +32,10 @@ public class DataController {
         }
     }
 
+    /**
+     * Fetches and stores competitions and their seasons.
+     * @return 200 OK if successful
+     */
     @PostMapping("/fetch-competitions-with-seasons")
     public ResponseEntity<Void> fetchCompetitionsWithSeasons() {
         try {
@@ -35,6 +46,10 @@ public class DataController {
         }
     }
 
+    /**
+     * Fetches and stores teams and their players.
+     * @return 200 OK if successful
+     */
     @PostMapping("/fetch-teams-with-players")
     public ResponseEntity<Void> fetchTeamsWithPlayers() {
         try {
@@ -45,6 +60,10 @@ public class DataController {
         }
     }
 
+    /**
+     * Fetches and stores football match data.
+     * @return 200 OK if successful
+     */
     @PostMapping("/fetch-matches")
     public ResponseEntity<Void> fetchMatches() {
         try {

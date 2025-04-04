@@ -13,10 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
+/**
+ * Configuration class responsible for initializing the default admin user on application startup.
+ */
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
 public class AdminUserConfig {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SequenceGeneratorService sequenceGenerator;
@@ -30,6 +34,11 @@ public class AdminUserConfig {
     @Value("${admin.password}")
     private String adminPassword;
 
+    /**
+     * CommandLineRunner that creates an admin user if it does not already exist in the database.
+     *
+     * @return CommandLineRunner instance
+     */
     @Bean
     public CommandLineRunner initAdminUser() {
         return args -> {
@@ -51,3 +60,4 @@ public class AdminUserConfig {
         };
     }
 }
+
