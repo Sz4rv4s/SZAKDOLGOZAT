@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *   <li>Component scanning within the package and sub-packages</li>
  *   <li>Ability to define additional beans in the application context</li>
  * </ul>
- * </p>
  *
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  */

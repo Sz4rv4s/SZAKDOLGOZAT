@@ -48,7 +48,6 @@ class TokenServiceTest {
         assertNotNull(token);
         assertEquals("testuser", tokenService.extractUsername(token));
         assertTrue(tokenService.isTokenValid(token));
-        Claims claims = tokenService.extractAllClaims(token);
     }
 
     @Test
