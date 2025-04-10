@@ -21,3 +21,4 @@ BRUNO/SZAKDOLGOZAT
 /frontend/*.local
 /frontend/.env
 backend/.vscode
+.vscode/settings.json
