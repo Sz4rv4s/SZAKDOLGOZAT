@@ -8,8 +8,10 @@ import { useAuthStore } from "../store/authStore";
 import { useNotificationStore } from "../store/notificationStore.ts";
 import { ApiErrorResponse } from "../types/types";
 
+const URL = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
-  baseURL: process.env.VITE_API_URL || "/api",
+  baseURL: URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -122,7 +124,7 @@ export default api;
 
 export const createApiClient = (basePath: string): AxiosInstance => {
   const instance = axios.create({
-    baseURL: `${process.env.VITE_API_URL || "/api"}${basePath}`,
+    baseURL: `${URL}${basePath}`,
     headers: { "Content-Type": "application/json" },
   });
   applyRequestInterceptor(instance);
